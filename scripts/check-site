@@ -21,6 +21,10 @@ BANNED_PHRASES = ["hands-free", "hands free", "driving", "adhd"]
 # exact phrase "driving test" is allowed. Any other use of "driving" still fails.
 BANNED_EXCEPTIONS = ["driving test"]
 
+# The site went live on 14 October 2026. Until then three pages carried the
+# placeholder "(date the site goes live)". It must never appear again.
+GO_LIVE_PLACEHOLDER = "date the site goes live"
+
 # Colour pairs that must pass, as (foreground, background, minimum ratio, note)
 CONTRAST_PAIRS = [
     ("--ink", "--page", 13.5, "text on the grey page"),
@@ -307,6 +311,7 @@ def check_page(path, seen_titles, seen_descs):
         fail(f"{name}: Google Fonts reference")
 
     check_banned(name, root.text())
+    check_placeholder(name, raw)
     ok(f"{name}: page structure, metadata, links, images, scripts checked")
     return title
 
@@ -318,6 +323,11 @@ def check_banned(name, text):
     for phrase in BANNED_PHRASES:
         if re.search(r"(?<![a-z])" + re.escape(phrase) + r"(?![a-z])", low):
             fail(f"{name}: banned phrase found: {phrase}")
+
+
+def check_placeholder(name, text):
+    if GO_LIVE_PLACEHOLDER in text.lower():
+        fail(f"{name}: go-live date placeholder still present ({GO_LIVE_PLACEHOLDER})")
 
 
 def check_css():
@@ -392,7 +402,14 @@ def check_site_files(pages):
     llms = os.path.join(ROOT, "llms.txt")
     if os.path.exists(llms):
         with open(llms, encoding="utf-8") as f:
-            check_banned("llms.txt", f.read())
+            ltext = f.read()
+        check_banned("llms.txt", ltext)
+        check_placeholder("llms.txt", ltext)
+    for textfile in ("sitemap.xml", "robots.txt", "site.webmanifest"):
+        tp = os.path.join(ROOT, textfile)
+        if os.path.exists(tp):
+            with open(tp, encoding="utf-8") as f:
+                check_placeholder(textfile, f.read())
     cname = os.path.join(ROOT, "CNAME")
     if os.path.exists(cname):
         with open(cname, encoding="utf-8") as f:

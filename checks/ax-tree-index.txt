@@ -30,7 +30,7 @@ RootWebArea: "Leeam Applications: Apps that work for everyone"
       list
         listitem
           time
-            text: "(date the site goes live)"
+            text: "14 October 2026"
           heading: "Welcome to our new website." level 3
             text: "Welcome to our new website."
           paragraph

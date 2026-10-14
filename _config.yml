@@ -1,0 +1,8 @@
+# GitHub Pages build settings for leeamapplications.com.
+# The checks and scripts folders are working files, not part of the website,
+# so the default Pages (Jekyll) build leaves them out of the published site.
+# Do not add a .nojekyll file: it would switch this exclusion off.
+exclude:
+  - checks
+  - scripts
+  - .gitignore

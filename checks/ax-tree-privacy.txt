@@ -66,7 +66,7 @@ RootWebArea: "Privacy notice | Leeam Applications"
     paragraph
       text: "If we change this notice, we will update this page and the date below."
     paragraph
-      text: "Effective date: (date the site goes live)."
+      text: "Effective date: 14 October 2026."
   contentinfo
     navigation: "Footer"
       list

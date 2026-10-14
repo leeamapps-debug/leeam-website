@@ -28,7 +28,7 @@ RootWebArea: "Accessibility | Leeam Applications"
         text: "info@leeamapplications.com"
       text: ". We read every message, and your feedback helps us make things better for everyone."
     paragraph
-      text: "Last reviewed: (the date the site goes live)."
+      text: "Last reviewed: 14 October 2026."
   contentinfo
     navigation: "Footer"
       list
