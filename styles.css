@@ -60,6 +60,32 @@
   font-display: swap;
 }
 
+/* The plain zero (Liam, 14 October 2026). Atkinson Hyperlegible draws a slashed zero by design and its font
+   files have no OpenType switch to turn that off (their substitution features are aalt, case, ccmp, frac, locl,
+   ordn, pnum, sups and tnum; no "zero" and no stylistic sets). So the digits 0 to 9 of body text are taken from
+   Space Grotesk, whose zero is plain, under the body font's own family name. Two things matter here:
+   these faces are declared after the Atkinson faces, because when two faces of a family cover the same
+   character the later one wins; and each one repeats an Atkinson face's exact weight (400, then 700), because
+   browsers pick a face by weight first and only then look at which characters it covers, so a 300 to 700 range
+   would never be consulted for 400 weight text. Every other character still comes from Atkinson Hyperlegible.
+   The site uses no italic text, so no italic digit faces are needed. */
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/SpaceGrotesk-variable.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0030-0039;
+}
+@font-face {
+  font-family: "Atkinson Hyperlegible";
+  src: url("fonts/SpaceGrotesk-variable.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0030-0039;
+}
+
 /* Base */
 *,
 *::before,
@@ -512,7 +538,11 @@ main .wrap > * + * {
   padding: 0.35rem 0;
 }
 
-/* Social links: footer (small) and contact page (large) */
+/* Social links (Liam, 14 October 2026): the footer shows the four official logos on their own; the contact
+   page shows each logo with the account's name. Meta's rules for the Facebook logo and the Instagram glyph
+   shape the layout: no word next to the Facebook logo, clear space of at least a quarter of its width on
+   every side, at least half its width to any other content, never narrower than 16 pixels, and no
+   recolouring, outlines, shadows or containers, so the logos sit directly on the white panel. */
 .social-list {
   list-style: none;
   margin: 0;
@@ -523,20 +553,19 @@ main .wrap > * + * {
   max-width: none;
 }
 
+/* Footer: a 56 by 56 pixel tile around a 28 pixel logo, so there is 14 pixels (half the logo's width)
+   of clear space on every side inside the tile, and the tiles are 12 pixels apart on top of that */
 .social-list a {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  min-width: 44px;
-  min-height: 44px;
-  padding: 0.4rem 0.8rem;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
   color: var(--ink);
   font-family: var(--font-heading);
   font-weight: 600;
   text-decoration: none;
-  border: 2px solid var(--ink);
   border-radius: var(--radius-small);
-  background: var(--panel);
 }
 
 .social-list a:hover {
@@ -548,14 +577,30 @@ main .wrap > * + * {
   height: auto;
 }
 
+/* Contact page: one row per network, the 40 pixel logo first, then the account's name 20 pixels
+   (half the logo's width) to its right; rows are 60 pixels tall with 8 pixels between them */
+.social-list.large {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
 .social-list.large a {
+  width: auto;
+  height: auto;
   min-height: 60px;
-  padding: 0.75rem 1.25rem;
+  justify-content: flex-start;
+  gap: 1.25rem;
+  padding: 0.5rem 1rem 0.5rem 0.625rem;
   font-size: 1.2rem;
 }
 
 .social-list.large img {
   width: 40px;
+}
+
+.social-list.large span {
+  overflow-wrap: anywhere;
 }
 
 /* Footer: a white panel so no text sits on the mesh */

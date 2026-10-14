@@ -1,4 +1,4 @@
-21 distinct URLs requested while loading every page at every width.
+23 distinct URLs requested while loading every page at every width.
 PASS  requests to any other host: 0
 
 /404.html
@@ -16,6 +16,8 @@ PASS  requests to any other host: 0
 /images/photo-lee.jpg
 /images/photo-liam.jpg
 /images/ryx-icon.png
+/images/social-facebook.png
+/images/social-instagram.png
 /images/social-tiktok.png
 /images/social-youtube.png
 /index.html

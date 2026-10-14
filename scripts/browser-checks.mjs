@@ -13,8 +13,11 @@
 //   ax-tree-<page>.txt                  the accessibility tree of every page, in reading order
 //   axe-<page>.json and axe-summary.txt axe-core results, if a copy of axe.min.js is given
 //   tap-sizes.txt                       the size of every link and button
+//   zero-check.txt and zero-after.png   which font draws the digits, and a close-up of the footer year and a news date
+//   social-spacing.txt                  the clear space around the Facebook logo, measured against Meta's rules
+//   social-footer-375.png, social-footer-1280.png, social-contact-1280.png   close-ups of the social links, magnified twice
 //
-// Usage:  node scripts/browser-checks.mjs [--axe /path/to/axe.min.js]
+// Usage:  node scripts/browser-checks.mjs [--axe /path/to/axe.min.js] [--zero-shot zero-before.png]
 
 import { spawn } from "node:child_process";
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from "node:fs";
@@ -119,8 +122,11 @@ async function evaluate(expression) {
 
 await send("Page.enable");
 await send("Network.enable");
+// Never serve a page from the browser cache: every run must look at the files as they are now.
+await send("Network.setCacheDisabled", { cacheDisabled: true });
 await send("Runtime.enable");
 await send("DOM.enable");
+await send("CSS.enable");
 await send("Accessibility.enable");
 await send("Emulation.setFocusEmulationEnabled", { enabled: true });
 
@@ -273,6 +279,179 @@ async function tapSizes(page, width) {
   })()`);
 }
 
+
+// ---------- the plain zero ----------
+// Atkinson Hyperlegible draws a slashed zero by design and has no OpenType switch to turn it off.
+// Liam wants every zero plain, so the digits of body text come from Space Grotesk (whose zero is plain)
+// while every letter stays in Atkinson Hyperlegible. Two proofs, both on the home page at 1280 pixels:
+//   1. CSS.getPlatformFontsForNode reports which font file drew how many glyphs of the footer line
+//      "© 2026 Leeam Applications" and of the news date "12 October 2026".
+//   2. A canvas draws the digit 0 in the body font and in the heading font, then samples the middle of the
+//      glyph: a slashed (or dotted) zero has ink there, a plain zero has none.
+// It also writes a close-up of both lines, magnified four times, as checks/zero-after.png
+// (or the file named with --zero-shot, used for the "before" picture).
+const zeroArg = process.argv.indexOf("--zero-shot");
+const ZERO_SHOT = zeroArg > -1 ? process.argv[zeroArg + 1] : "zero-after.png";
+const zeroLines = [];
+
+async function platformFonts(selector) {
+  const { root } = await send("DOM.getDocument", { depth: 1 });
+  const { nodeId } = await send("DOM.querySelector", { nodeId: root.nodeId, selector });
+  if (!nodeId) throw new Error("no element matches " + selector);
+  const { fonts } = await send("CSS.getPlatformFontsForNode", { nodeId });
+  return fonts.map((f) => ({ family: f.familyName, glyphs: f.glyphCount, custom: f.isCustomFont }));
+}
+
+async function zeroInk(fontFamilyCss) {
+  return evaluate(`(() => {
+    const S = 400;
+    const c = document.createElement('canvas'); c.width = S; c.height = S;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, S, S);
+    ctx.fillStyle = '#000'; ctx.font = '300px ' + ${JSON.stringify(fontFamilyCss)};
+    ctx.fillText('0', 60, 340);
+    const d = ctx.getImageData(0, 0, S, S).data;
+    const dark = (x, y) => d[(y * S + x) * 4] < 128;
+    let minX = S, maxX = -1, minY = S, maxY = -1;
+    for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) if (dark(x, y)) { if (x < minX) minX = x; if (x > maxX) maxX = x; if (y < minY) minY = y; if (y > maxY) maxY = y; }
+    if (maxX < 0) return { drawn: false };
+    const cx = Math.round((minX + maxX) / 2), cy = Math.round((minY + maxY) / 2);
+    let ink = 0, sampled = 0;
+    for (let y = cy - 6; y <= cy + 6; y++) for (let x = cx - 6; x <= cx + 6; x++) { sampled++; if (dark(x, y)) ink++; }
+    return { drawn: true, width: maxX - minX + 1, height: maxY - minY + 1, centreInk: ink, sampled };
+  })()`);
+}
+
+async function clipShot(selector, scale, margin = 10) {
+  const box = await evaluate(`(() => {
+    const e = document.querySelector(${JSON.stringify(selector)});
+    const r = e.getBoundingClientRect();
+    return { x: r.left + window.scrollX, y: r.top + window.scrollY, width: r.width, height: r.height, text: e.textContent.trim() };
+  })()`);
+  const shot = await send("Page.captureScreenshot", {
+    format: "png",
+    captureBeyondViewport: true,
+    clip: { x: Math.max(0, box.x - margin), y: Math.max(0, box.y - margin), width: box.width + margin * 2, height: box.height + margin * 2, scale },
+  });
+  return { data: shot.data, text: box.text };
+}
+
+// a close-up of one element, magnified twice, with a little of its surroundings
+async function closeUp(selector, file) {
+  const fullHeight = await evaluate("document.documentElement.scrollHeight");
+  const width = await evaluate("document.documentElement.clientWidth");
+  await send("Emulation.setDeviceMetricsOverride", { width, height: fullHeight, deviceScaleFactor: 1, mobile: width < 768 });
+  await sleep(100);
+  const shot = await clipShot(selector, 2, 24);
+  writeFileSync(join(CHECKS, file), Buffer.from(shot.data, "base64"));
+  await setViewport(width);
+}
+
+async function zeroCheck() {
+  await setViewport(1280);
+  await open("index.html");
+  const footerSel = "footer small";
+  const dateSel = '.news-list time[datetime="2026-10-12"]';
+
+  const fams = await evaluate(`({ body: getComputedStyle(document.body).fontFamily, heading: getComputedStyle(document.querySelector('h1')).fontFamily })`);
+  const footerFonts = await platformFonts(footerSel);
+  const dateFonts = await platformFonts(dateSel);
+  const bodyZero = await zeroInk(fams.body);
+  const headingZero = await zeroInk(fams.heading);
+
+  const describe = (fonts) => fonts.map((f) => `${f.family} drew ${f.glyphs} glyph(s)`).join(", ");
+  const sg = (f) => /space grotesk/i.test(f.family);
+  const atk = (f) => /atkinson/i.test(f.family);
+
+  // footer line: 4 digits (2026) from Space Grotesk, everything else from Atkinson Hyperlegible, nothing else
+  const footerSG = footerFonts.filter(sg).reduce((n, f) => n + f.glyphs, 0);
+  const footerOther = footerFonts.filter((f) => !sg(f) && !atk(f));
+  const footerOk = footerSG === 4 && footerFonts.some(atk) && footerOther.length === 0;
+  zeroLines.push(`${footerOk ? "PASS" : "FAIL"}  footer line "© 2026 Leeam Applications": ${describe(footerFonts)} (expected Space Grotesk to draw exactly the 4 digits and Atkinson Hyperlegible the rest)`);
+
+  // news date: every glyph from Space Grotesk (headings and dates already use it)
+  const dateOk = dateFonts.length > 0 && dateFonts.every(sg);
+  zeroLines.push(`${dateOk ? "PASS" : "FAIL"}  news date "12 October 2026": ${describe(dateFonts)} (expected Space Grotesk only)`);
+
+  // the shape of the zero itself
+  const bodyOk = bodyZero.drawn && bodyZero.centreInk === 0;
+  const headOk = headingZero.drawn && headingZero.centreInk === 0;
+  zeroLines.push(`${bodyOk ? "PASS" : "FAIL"}  digit 0 in the body font stack (${fams.body}): ${bodyZero.drawn ? `${bodyZero.centreInk} of ${bodyZero.sampled} centre pixels inked` : "nothing drawn"} (a plain zero has an empty middle; a slashed zero does not)`);
+  zeroLines.push(`${headOk ? "PASS" : "FAIL"}  digit 0 in the heading font stack (${fams.heading}): ${headingZero.drawn ? `${headingZero.centreInk} of ${headingZero.sampled} centre pixels inked` : "nothing drawn"}`);
+
+  // close-up picture: both lines magnified four times, stacked, with a plain caption above each
+  const fullHeight = await evaluate("document.documentElement.scrollHeight");
+  await send("Emulation.setDeviceMetricsOverride", { width: 1280, height: fullHeight, deviceScaleFactor: 1, mobile: false });
+  await sleep(100);
+  const a = await clipShot(footerSel, 4);
+  const b = await clipShot(dateSel, 4);
+  await setViewport(1280);
+  const composed = await evaluate(`(async () => {
+    // decoded from bytes, not from a data: URL, so the network log stays a list of real requests
+    const load = (b64) => createImageBitmap(new Blob([Uint8Array.from(atob(b64), (ch) => ch.charCodeAt(0))], { type: 'image/png' }));
+    const A = await load(${JSON.stringify(a.data)}); const B = await load(${JSON.stringify(b.data)});
+    const pad = 24, cap = 36;
+    const c = document.createElement('canvas');
+    c.width = Math.max(A.width, B.width) + pad * 2; c.height = A.height + B.height + cap * 2 + pad * 3;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, c.width, c.height);
+    ctx.fillStyle = '#111'; ctx.font = '24px sans-serif';
+    ctx.fillText(${JSON.stringify("Footer line, body font, magnified four times")}, pad, pad + 24);
+    ctx.drawImage(A, pad, pad + cap);
+    ctx.fillText(${JSON.stringify("News date, heading font, magnified four times")}, pad, pad * 2 + cap + A.height + 24);
+    ctx.drawImage(B, pad, pad * 2 + cap * 2 + A.height);
+    return c.toDataURL('image/png').split(',')[1];
+  })()`);
+  writeFileSync(join(CHECKS, ZERO_SHOT), Buffer.from(composed, "base64"));
+  zeroLines.push(`close-up written: ${ZERO_SHOT} (footer text "${a.text}", news date "${b.text}")`);
+  writeFileSync(join(CHECKS, "zero-check.txt"), zeroLines.join("\n") + "\n");
+}
+
+// ---------- clear space around the Facebook logo ----------
+// Meta's rules: nothing written next to the logo, clear space of at least a quarter of the logo's width on
+// every side, at least half its width to any other content, and never narrower than 16 pixels.
+// "Other content" here is every image and every run of visible text on the page that is not the logo itself.
+const socialLines = [];
+async function facebookClearSpace(page, width) {
+  const results = await evaluate(`(() => {
+    const out = [];
+    document.querySelectorAll('img[src$="social-facebook.png"]').forEach((logo) => {
+      const L = logo.getBoundingClientRect();
+      const link = logo.closest('a');
+      const rects = [];
+      document.querySelectorAll('img, svg').forEach((el) => {
+        if (el === logo || logo.contains(el)) return;
+        const r = el.getBoundingClientRect(); if (r.width && r.height) rects.push({ r, what: 'image ' + (el.getAttribute('src') || el.tagName.toLowerCase()) });
+      });
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      let t;
+      while ((t = walker.nextNode())) {
+        if (!t.textContent.trim()) continue;
+        const el = t.parentElement;
+        if (!el || el.closest('.visually-hidden, .skip-link, script, style')) continue;
+        const range = document.createRange(); range.selectNodeContents(t);
+        for (const r of range.getClientRects()) if (r.width && r.height) rects.push({ r, what: 'text "' + t.textContent.trim().slice(0, 30) + '"' });
+      }
+      let nearest = null;
+      for (const { r, what } of rects) {
+        const dx = Math.max(0, Math.max(r.left - L.right, L.left - r.right));
+        const dy = Math.max(0, Math.max(r.top - L.bottom, L.top - r.bottom));
+        const d = Math.round(Math.hypot(dx, dy) * 10) / 10;
+        if (!nearest || d < nearest.d) nearest = { d, what };
+      }
+      const words = link ? link.textContent.trim() : '';
+      out.push({ where: link && link.closest('.social-list.large') ? 'contact list' : 'footer', w: Math.round(L.width * 10) / 10, h: Math.round(L.height * 10) / 10, link: link ? { w: Math.round(link.getBoundingClientRect().width), h: Math.round(link.getBoundingClientRect().height), words } : null, nearest });
+    });
+    return out;
+  })()`);
+  for (const r of results) {
+    const half = r.w / 2, quarter = r.w / 4;
+    const ok = r.w >= 16 && r.nearest && r.nearest.d >= half && r.nearest.d >= quarter;
+    socialLines.push(`${ok ? "PASS" : "FAIL"}  ${page} at ${width}px, ${r.where}: Facebook logo ${r.w} by ${r.h} px inside a ${r.link.w} by ${r.link.h} px link; nearest other content is ${r.nearest.what} at ${r.nearest.d} px (needs at least ${half} px, half the logo's width; a quarter is ${quarter} px)${r.link.words ? `; words inside the link: "${r.link.words}"` : "; no words inside the link"}`);
+  }
+  return results.length;
+}
+
 // ---------- run ----------
 const summary = [];
 const tapLines = [];
@@ -289,6 +468,9 @@ for (const page of PAGES) {
       const small = t.w < 44 || t.h < 44;
       tapLines.push(`${small ? (t.inline ? "note" : "FAIL") : "PASS"}  ${page} at ${width}px: "${t.label}" ${t.w} by ${t.h}${small && t.inline ? " (a link inside a sentence; exempt under WCAG 2.5.8)" : ""}`);
     }
+    await facebookClearSpace(page, width);
+    if (page === "index.html") await closeUp("footer .social-list", `social-footer-${width}.png`);
+    if (page === "contact.html" && width === 1280) await closeUp(".social-list.large", "social-contact-1280.png");
     if (width === 1280) {
       await axTree(page);
       await runAxe(page);
@@ -305,6 +487,8 @@ for (const page of PAGES) {
   await open(page);
   await overflowCheck(page, 320);
 }
+
+await zeroCheck();
 
 // home page at 200 percent zoom: a 1280 window zoomed to 200 percent lays out like a 640 pixel window drawn twice as large
 await setViewport(640, 2);
@@ -332,6 +516,7 @@ writeFileSync(
 writeFileSync(join(CHECKS, "overflow.txt"), overflowLines.join("\n") + "\n");
 writeFileSync(join(CHECKS, "tap-sizes.txt"), tapLines.join("\n") + "\n");
 writeFileSync(join(CHECKS, "fonts.txt"), fontLines.join("\n") + "\n");
+writeFileSync(join(CHECKS, "social-spacing.txt"), (socialLines.length ? socialLines : ["no Facebook logo image found on any page"]).join("\n") + "\n");
 if (axeSource) writeFileSync(join(CHECKS, "axe-summary.txt"), axeSummary.join("\n") + "\n");
 
 const failures = [
@@ -339,6 +524,9 @@ const failures = [
   ...tapLines.filter((l) => l.startsWith("FAIL")),
   ...(external.length ? [`external requests: ${external.join(", ")}`] : []),
   ...axeSummary.filter((l) => !/ 0 violations/.test(l)),
+  ...zeroLines.filter((l) => l.startsWith("FAIL")),
+  ...socialLines.filter((l) => l.startsWith("FAIL")),
+  ...(socialLines.length ? [] : ["no Facebook logo image found on any page"]),
 ];
 const report =
   summary.join("\n") +
@@ -348,6 +536,10 @@ const report =
   kb.join("\n") +
   "\n\n" +
   (axeSource ? axeSummary.join("\n") : "axe-core: not run (no --axe path given)") +
+  "\n\nthe plain zero:\n" +
+  zeroLines.join("\n") +
+  "\n\nclear space around the Facebook logo:\n" +
+  (socialLines.length ? socialLines.join("\n") : "FAIL  no Facebook logo image found on any page") +
   "\n\n" +
   `RESULT: ${failures.length ? "FAIL" : "PASS"} (${failures.length} failure line(s))\n`;
 writeFileSync(join(CHECKS, "browser-checks-summary.txt"), report);

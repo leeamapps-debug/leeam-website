@@ -28,16 +28,16 @@ RootWebArea: "Contact | Leeam Applications"
     list
       listitem
         link: "Leeam Applications on Facebook" -> https://www.facebook.com/profile.php?id=61582232072676
-          text: "Facebook"
+          text: "Leeam Applications"
       listitem
         link: "Leeam Applications on Instagram" -> https://www.instagram.com/leeam_applications/
-          text: "Instagram"
+          text: "leeam_applications"
       listitem
         link: "Leeam Applications on TikTok" -> https://www.tiktok.com/@leeamapps
-          text: "TikTok"
+          text: "@leeamapps"
       listitem
         link: "Leeam Applications on YouTube" -> https://www.youtube.com/@LeeamApplications
-          text: "YouTube"
+          text: "@LeeamApplications"
   contentinfo
     navigation: "Footer"
       list
@@ -58,14 +58,10 @@ RootWebArea: "Contact | Leeam Applications"
     list
       listitem
         link: "Leeam Applications on Facebook" -> https://www.facebook.com/profile.php?id=61582232072676
-          text: "Facebook"
       listitem
         link: "Leeam Applications on Instagram" -> https://www.instagram.com/leeam_applications/
-          text: "Instagram"
       listitem
         link: "Leeam Applications on TikTok" -> https://www.tiktok.com/@leeamapps
-          text: "TikTok"
       listitem
         link: "Leeam Applications on YouTube" -> https://www.youtube.com/@LeeamApplications
-          text: "YouTube"
     text: "© 2026 Leeam Applications"

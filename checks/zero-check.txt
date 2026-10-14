@@ -1,0 +1,5 @@
+PASS  footer line "© 2026 Leeam Applications": Atkinson Hyperlegible drew 21 glyph(s), Space Grotesk Light drew 4 glyph(s) (expected Space Grotesk to draw exactly the 4 digits and Atkinson Hyperlegible the rest)
+PASS  news date "12 October 2026": Space Grotesk Light drew 15 glyph(s) (expected Space Grotesk only)
+PASS  digit 0 in the body font stack ("Atkinson Hyperlegible", Verdana, "Helvetica Neue", Arial, sans-serif): 0 of 169 centre pixels inked (a plain zero has an empty middle; a slashed zero does not)
+PASS  digit 0 in the heading font stack ("Space Grotesk", "Helvetica Neue", Arial, sans-serif): 0 of 169 centre pixels inked
+close-up written: zero-after.png (footer text "© 2026 Leeam Applications", news date "12 October 2026")
