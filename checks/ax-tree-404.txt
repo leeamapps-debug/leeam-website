@@ -1,0 +1,59 @@
+RootWebArea: "Page not found | Leeam Applications"
+  link: "Skip to main content" -> 404.html#main
+    text: "Skip to main content"
+  banner
+    link: "Leeam Applications home page" -> index.html
+      image: "Leeam Applications home page"
+    navigation: "Main"
+      list
+        listitem
+          link: "Home" -> index.html
+            text: "Home"
+        listitem
+          link: "Apps" -> apps.html
+            text: "Apps"
+        listitem
+          link: "Contact" -> contact.html
+            text: "Contact"
+  main
+    heading: "We can't find that page" level 1
+      text: "We can't find that page"
+    paragraph
+      text: "The page you were looking for isn't here. It may have moved, or the address may have a small typo in it."
+    paragraph
+      text: "Try one of these instead:"
+    link: "Go to the home page" -> index.html
+      text: "Go to the home page"
+    link: "See our apps" -> apps.html
+      text: "See our apps"
+  contentinfo
+    navigation: "Footer"
+      list
+        listitem
+          link: "Apps" -> apps.html
+            text: "Apps"
+        listitem
+          link: "Contact" -> contact.html
+            text: "Contact"
+        listitem
+          link: "Privacy" -> privacy.html
+            text: "Privacy"
+        listitem
+          link: "Accessibility" -> accessibility.html
+            text: "Accessibility"
+    heading: "Leeam Applications on social media" level 2
+      text: "Leeam Applications on social media"
+    list
+      listitem
+        link: "Leeam Applications on Facebook" -> https://www.facebook.com/profile.php?id=61582232072676
+          text: "Facebook"
+      listitem
+        link: "Leeam Applications on Instagram" -> https://www.instagram.com/leeam_applications/
+          text: "Instagram"
+      listitem
+        link: "Leeam Applications on TikTok" -> https://www.tiktok.com/@leeamapps
+          text: "TikTok"
+      listitem
+        link: "Leeam Applications on YouTube" -> https://www.youtube.com/@LeeamApplications
+          text: "YouTube"
+    text: "© 2026 Leeam Applications"

@@ -1,0 +1,71 @@
+RootWebArea: "Contact | Leeam Applications"
+  link: "Skip to main content" -> contact.html#main
+    text: "Skip to main content"
+  banner
+    link: "Leeam Applications home page" -> index.html
+      image: "Leeam Applications home page"
+    navigation: "Main"
+      list
+        listitem
+          link: "Home" -> index.html
+            text: "Home"
+        listitem
+          link: "Apps" -> apps.html
+            text: "Apps"
+        listitem
+          link: "Contact" -> contact.html
+            text: "Contact"
+  main
+    heading: "Contact us" level 1
+      text: "Contact us"
+    paragraph
+      text: "The best way to reach us is by email. We read every message."
+    paragraph
+      link: "info@leeamapplications.com" -> mailto:info@leeamapplications.com
+        text: "info@leeamapplications.com"
+    heading: "Find us on social media" level 2
+      text: "Find us on social media"
+    list
+      listitem
+        link: "Leeam Applications on Facebook" -> https://www.facebook.com/profile.php?id=61582232072676
+          text: "Facebook"
+      listitem
+        link: "Leeam Applications on Instagram" -> https://www.instagram.com/leeam_applications/
+          text: "Instagram"
+      listitem
+        link: "Leeam Applications on TikTok" -> https://www.tiktok.com/@leeamapps
+          text: "TikTok"
+      listitem
+        link: "Leeam Applications on YouTube" -> https://www.youtube.com/@LeeamApplications
+          text: "YouTube"
+  contentinfo
+    navigation: "Footer"
+      list
+        listitem
+          link: "Apps" -> apps.html
+            text: "Apps"
+        listitem
+          link: "Contact" -> contact.html
+            text: "Contact"
+        listitem
+          link: "Privacy" -> privacy.html
+            text: "Privacy"
+        listitem
+          link: "Accessibility" -> accessibility.html
+            text: "Accessibility"
+    heading: "Leeam Applications on social media" level 2
+      text: "Leeam Applications on social media"
+    list
+      listitem
+        link: "Leeam Applications on Facebook" -> https://www.facebook.com/profile.php?id=61582232072676
+          text: "Facebook"
+      listitem
+        link: "Leeam Applications on Instagram" -> https://www.instagram.com/leeam_applications/
+          text: "Instagram"
+      listitem
+        link: "Leeam Applications on TikTok" -> https://www.tiktok.com/@leeamapps
+          text: "TikTok"
+      listitem
+        link: "Leeam Applications on YouTube" -> https://www.youtube.com/@LeeamApplications
+          text: "YouTube"
+    text: "© 2026 Leeam Applications"

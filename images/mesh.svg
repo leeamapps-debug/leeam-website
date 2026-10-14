@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="84" height="140" viewBox="0 0 84 140">
+  <!-- The triangle mesh from the Leeam logo, drawn as one repeating tile.
+       In the logo the mesh is rows of triangles 82 units wide and 68.4 units tall, a 6 to 5 proportion,
+       with every diagonal running across two rows before the pattern repeats. This tile is therefore
+       84 wide by 140 tall (two rows of 70). The lines run slightly past the tile edges so the pattern
+       joins without gaps. The horizontals sit on half pixels so they draw as crisp single-pixel lines,
+       and are a touch lighter than the diagonals, which the browser softens, so all lines look the same weight.
+       It is only ever used, very faintly, on the grey page background; the white panels cover it. -->
+  <path d="M-10 0.5H94 M-10 70.5H94" fill="none" stroke="#111111" stroke-opacity="0.06" stroke-width="1"/>
+  <path d="M-6 -10L90 150 M90 -10L-6 150" fill="none" stroke="#111111" stroke-opacity="0.085" stroke-width="1"/>
+</svg>

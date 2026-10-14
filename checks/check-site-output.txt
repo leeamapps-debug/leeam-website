@@ -1,0 +1,13 @@
+PASS  404.html: page structure, metadata, links, images, scripts checked
+PASS  accessibility.html: page structure, metadata, links, images, scripts checked
+PASS  apps.html: page structure, metadata, links, images, scripts checked
+PASS  contact.html: page structure, metadata, links, images, scripts checked
+PASS  index.html: page structure, metadata, links, images, scripts checked
+PASS  privacy.html: page structure, metadata, links, images, scripts checked
+PASS  contrast text on the grey page: #111111 on #D9DCE1 is 13.74:1 (needs 13.5:1)
+PASS  contrast black text on orange buttons: #111111 on #FF6616 is 6.44:1 (needs 6.4:1)
+PASS  contrast deep orange links on the grey page: #9A3800 on #D9DCE1 is 5.20:1 (needs 4.5:1)
+PASS  contrast deep orange links on white panels: #9A3800 on #FFFFFF is 7.14:1 (needs 4.5:1)
+
+6 page(s) checked, 10 pass line(s), 0 failure(s)
+RESULT: PASS

@@ -1,0 +1,435 @@
+#!/usr/bin/env python3
+"""Leeam Applications website checks.
+
+Run from anywhere:  python3 scripts/check-site
+Exit code 0 means every check passed; 1 means at least one failed.
+Standard library only, so nothing needs installing.
+"""
+import json
+import os
+import re
+import sys
+from html.parser import HTMLParser
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SITE_URL = "https://leeamapplications.com/"
+
+BANNED_PHRASES = ["hands-free", "hands free", "driving", "adhd"]
+# One documented exception, agreed in the build report: the About us section
+# approved by Lee on 13 October 2026 says "Lee passed his driving test first".
+# That is a life story, not a claim about using an app while driving, so the
+# exact phrase "driving test" is allowed. Any other use of "driving" still fails.
+BANNED_EXCEPTIONS = ["driving test"]
+
+# Colour pairs that must pass, as (foreground, background, minimum ratio, note)
+CONTRAST_PAIRS = [
+    ("--ink", "--page", 13.5, "text on the grey page"),
+    ("--ink", "--orange", 6.4, "black text on orange buttons"),
+    ("--orange-deep", "--page", 4.5, "deep orange links on the grey page"),
+    ("--orange-deep", "--panel", 4.5, "deep orange links on white panels"),
+]
+
+TRACKER_HINTS = [
+    "googletagmanager", "google-analytics", "gtag(", "analytics.js", "plausible",
+    "matomo", "hotjar", "segment.com", "facebook.net", "fbq(", "clarity.ms",
+    "document.cookie", "posthog", "sentry",
+]
+
+LANDMARKS = ["header", "nav", "main", "footer"]
+
+failures = []
+passes = []
+
+
+def fail(msg):
+    failures.append(msg)
+
+
+def ok(msg):
+    passes.append(msg)
+
+
+class Node:
+    def __init__(self, tag, attrs, parent):
+        self.tag = tag
+        self.attrs = dict(attrs)
+        self.parent = parent
+        self.children = []
+        self.text_parts = []
+
+    def text(self):
+        out = []
+        for part in self.text_parts:
+            out.append(part)
+        for c in self.children:
+            out.append(c.text())
+        return "".join(out)
+
+    def iter(self):
+        yield self
+        for c in self.children:
+            yield from c.iter()
+
+
+VOID = {"area", "base", "br", "col", "embed", "hr", "img", "input", "link",
+        "meta", "param", "source", "track", "wbr"}
+
+
+class TreeBuilder(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.root = Node("document", [], None)
+        self.cur = self.root
+
+    def handle_starttag(self, tag, attrs):
+        node = Node(tag, attrs, self.cur)
+        self.cur.children.append(node)
+        if tag not in VOID:
+            self.cur = node
+
+    def handle_startendtag(self, tag, attrs):
+        self.cur.children.append(Node(tag, attrs, self.cur))
+
+    def handle_endtag(self, tag):
+        n = self.cur
+        while n is not None and n.tag != tag:
+            n = n.parent
+        if n is not None and n.parent is not None:
+            self.cur = n.parent
+
+    def handle_data(self, data):
+        self.cur.text_parts.append(data)
+
+
+def parse(path):
+    with open(path, encoding="utf-8") as f:
+        raw = f.read()
+    b = TreeBuilder()
+    b.feed(raw)
+    return b.root, raw
+
+
+def find_all(root, tag):
+    return [n for n in root.iter() if n.tag == tag]
+
+
+def is_external(url):
+    return bool(re.match(r"^(https?:)?//", url or ""))
+
+
+def is_special(url):
+    return bool(re.match(r"^(mailto:|tel:|#|data:|javascript:)", url or ""))
+
+
+def local_exists(page_path, ref):
+    ref = ref.split("#", 1)[0].split("?", 1)[0]
+    if ref == "":
+        return True
+    if ref.startswith("/"):
+        target = os.path.join(ROOT, ref.lstrip("/"))
+    else:
+        target = os.path.join(os.path.dirname(page_path), ref)
+    return os.path.exists(target)
+
+
+def rel_lum(hexcol):
+    hexcol = hexcol.lstrip("#")
+    r, g, b = (int(hexcol[i:i + 2], 16) / 255 for i in (0, 2, 4))
+
+    def lin(c):
+        return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
+    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
+
+
+def contrast(fg, bg):
+    a, b = rel_lum(fg), rel_lum(bg)
+    hi, lo = max(a, b), min(a, b)
+    return (hi + 0.05) / (lo + 0.05)
+
+
+def check_page(path, seen_titles, seen_descs):
+    name = os.path.relpath(path, ROOT)
+    root, raw = parse(path)
+    html = find_all(root, "html")
+    if not html or html[0].attrs.get("lang") != "en-GB":
+        fail(f"{name}: <html lang> is not en-GB")
+    titles = find_all(root, "title")
+    title = titles[0].text().strip() if titles else ""
+    if not title:
+        fail(f"{name}: no <title>")
+    elif title in seen_titles:
+        fail(f"{name}: title duplicates another page ({title})")
+    seen_titles.add(title)
+
+    metas = find_all(root, "meta")
+    desc = [m.attrs.get("content", "") for m in metas if m.attrs.get("name") == "description"]
+    if not desc or not desc[0].strip():
+        fail(f"{name}: no meta description")
+    elif desc[0] in seen_descs:
+        fail(f"{name}: meta description duplicates another page")
+    if desc:
+        seen_descs.add(desc[0])
+
+    links = find_all(root, "link")
+    canon = [l for l in links if l.attrs.get("rel", "").lower() == "canonical"]
+    if not canon:
+        fail(f"{name}: no canonical link")
+    else:
+        href = canon[0].attrs.get("href", "")
+        expected = SITE_URL if name == "index.html" else SITE_URL + name
+        if name != "404.html" and href != expected:
+            fail(f"{name}: canonical is {href}, expected {expected}")
+
+    props = {m.attrs.get("property"): m.attrs.get("content", "") for m in metas if m.attrs.get("property")}
+    names = {m.attrs.get("name"): m.attrs.get("content", "") for m in metas if m.attrs.get("name")}
+    for p in ("og:title", "og:description", "og:image", "og:url", "og:type"):
+        if not props.get(p):
+            fail(f"{name}: missing Open Graph tag {p}")
+    for t in ("twitter:card", "twitter:title", "twitter:description", "twitter:image"):
+        if not names.get(t):
+            fail(f"{name}: missing Twitter card tag {t}")
+
+    # Headings
+    heads = [n for n in root.iter() if re.fullmatch(r"h[1-6]", n.tag)]
+    h1s = [h for h in heads if h.tag == "h1"]
+    if len(h1s) != 1:
+        fail(f"{name}: expected exactly one h1, found {len(h1s)}")
+    prev = 0
+    for h in heads:
+        level = int(h.tag[1])
+        if prev and level > prev + 1:
+            fail(f"{name}: heading skips a level: h{prev} then h{level} ({h.text().strip()[:40]})")
+        prev = level
+    for h in heads:
+        if not h.text().strip():
+            fail(f"{name}: empty heading {h.tag}")
+
+    # Landmarks
+    for lm in LANDMARKS:
+        if not find_all(root, lm):
+            fail(f"{name}: no <{lm}> landmark")
+    mains = find_all(root, "main")
+    main_id = mains[0].attrs.get("id") if mains else None
+
+    # Skip link: the first link in the body must point at main
+    anchors = find_all(root, "a")
+    if not anchors:
+        fail(f"{name}: no links at all")
+    else:
+        first = anchors[0]
+        if not (first.attrs.get("href", "").startswith("#") and main_id and first.attrs.get("href") == "#" + main_id and "skip" in first.text().lower()):
+            fail(f"{name}: first link is not a skip link to #main")
+
+    # Images
+    for img in find_all(root, "img"):
+        if "alt" not in img.attrs:
+            fail(f"{name}: img without alt attribute ({img.attrs.get('src')})")
+        src = img.attrs.get("src", "")
+        if is_external(src):
+            fail(f"{name}: external image {src}")
+        elif not local_exists(path, src):
+            fail(f"{name}: image file missing {src}")
+
+    # Links
+    for a in anchors:
+        href = a.attrs.get("href")
+        if href is None:
+            fail(f"{name}: <a> without href")
+            continue
+        label = a.attrs.get("aria-label", "").strip()
+        text = a.text().strip()
+        img_alts = [i.attrs.get("alt", "").strip() for i in a.iter() if i.tag == "img"]
+        if not (label or text or any(img_alts)):
+            fail(f"{name}: link with no readable text ({href})")
+        if is_external(href):
+            continue  # a plain outgoing link is allowed
+        if is_special(href):
+            if href.startswith("#") and len(href) > 1:
+                ids = {n.attrs.get("id") for n in root.iter() if n.attrs.get("id")}
+                if href[1:] not in ids:
+                    fail(f"{name}: in-page link to missing id {href}")
+            continue
+        if not local_exists(path, href):
+            fail(f"{name}: internal link does not resolve ({href})")
+
+    # Buttons
+    for b in find_all(root, "button"):
+        if not (b.text().strip() or b.attrs.get("aria-label")):
+            fail(f"{name}: empty button")
+
+    # Local references from link/source/etc
+    for n in root.iter():
+        for attr in ("src", "href", "srcset", "poster", "data"):
+            if n.tag == "a" or attr not in n.attrs:
+                continue
+            # rel=canonical and rel=alternate are labels, not requests
+            if n.tag == "link" and n.attrs.get("rel", "").lower() in ("canonical", "alternate"):
+                continue
+            val = n.attrs[attr]
+            if attr == "srcset":
+                vals = [v.strip().split(" ")[0] for v in val.split(",")]
+            else:
+                vals = [val]
+            for v in vals:
+                if is_external(v):
+                    fail(f"{name}: external request from <{n.tag} {attr}> {v}")
+                elif not is_special(v) and not local_exists(path, v):
+                    fail(f"{name}: local file missing <{n.tag} {attr}> {v}")
+
+    # Scripts: only JSON-LD is allowed
+    for s in find_all(root, "script"):
+        if s.attrs.get("type") == "application/ld+json":
+            try:
+                data = json.loads(s.text())
+                if not isinstance(data, dict) or "@context" not in data:
+                    fail(f"{name}: JSON-LD block has no @context")
+            except json.JSONDecodeError as e:
+                fail(f"{name}: JSON-LD does not parse ({e})")
+        else:
+            fail(f"{name}: a <script> that is not JSON-LD ({s.attrs.get('src', 'inline')})")
+    for n in root.iter():
+        if n.tag == "iframe" or n.tag == "object" or n.tag == "embed":
+            fail(f"{name}: embedded content <{n.tag}>")
+        if n.tag == "meta" and n.attrs.get("http-equiv", "").lower() == "refresh":
+            fail(f"{name}: meta refresh")
+        for attr in n.attrs:
+            if attr.startswith("on"):
+                fail(f"{name}: inline event handler {attr} on <{n.tag}>")
+        if "style" in n.attrs and "url(" in n.attrs["style"]:
+            if re.search(r"url\(\s*['\"]?(https?:)?//", n.attrs["style"]):
+                fail(f"{name}: external url() in inline style")
+
+    low = raw.lower()
+    for hint in TRACKER_HINTS:
+        if hint in low:
+            fail(f"{name}: tracker or cookie hint found: {hint}")
+    if "fonts.googleapis.com" in low or "fonts.gstatic.com" in low:
+        fail(f"{name}: Google Fonts reference")
+
+    check_banned(name, root.text())
+    ok(f"{name}: page structure, metadata, links, images, scripts checked")
+    return title
+
+
+def check_banned(name, text):
+    low = text.lower()
+    for exc in BANNED_EXCEPTIONS:
+        low = low.replace(exc, "")
+    for phrase in BANNED_PHRASES:
+        if re.search(r"(?<![a-z])" + re.escape(phrase) + r"(?![a-z])", low):
+            fail(f"{name}: banned phrase found: {phrase}")
+
+
+def check_css():
+    path = os.path.join(ROOT, "styles.css")
+    if not os.path.exists(path):
+        fail("styles.css is missing")
+        return {}
+    with open(path, encoding="utf-8") as f:
+        css = f.read()
+    if re.search(r"url\(\s*['\"]?(https?:)?//", css) or "@import" in css:
+        fail("styles.css: external url() or @import")
+    for m in re.finditer(r"url\(\s*['\"]?([^'\")]+)['\"]?\s*\)", css):
+        ref = m.group(1)
+        if ref.startswith("data:"):
+            continue
+        if not os.path.exists(os.path.join(ROOT, ref.split("?")[0].split("#")[0])):
+            fail(f"styles.css: referenced file missing {ref}")
+    tokens = dict(re.findall(r"(--[a-z0-9-]+)\s*:\s*(#[0-9a-fA-F]{6})\s*;", css))
+    for fg, bg, minimum, note in CONTRAST_PAIRS:
+        if fg not in tokens or bg not in tokens:
+            fail(f"styles.css: colour token missing for {note} ({fg} / {bg})")
+            continue
+        ratio = contrast(tokens[fg], tokens[bg])
+        if ratio < minimum:
+            fail(f"contrast {note}: {tokens[fg]} on {tokens[bg]} is {ratio:.2f}:1, needs {minimum}:1")
+        else:
+            ok(f"contrast {note}: {tokens[fg]} on {tokens[bg]} is {ratio:.2f}:1 (needs {minimum}:1)")
+    if "prefers-reduced-motion" not in css:
+        fail("styles.css: no prefers-reduced-motion rule")
+    if ":focus-visible" not in css:
+        fail("styles.css: no :focus-visible rule")
+    if "@font-face" not in css:
+        fail("styles.css: no @font-face rules (fonts must be self-hosted)")
+    check_banned("styles.css", css)
+    return tokens
+
+
+def check_site_files(pages):
+    sm = os.path.join(ROOT, "sitemap.xml")
+    if not os.path.exists(sm):
+        fail("sitemap.xml missing")
+    else:
+        with open(sm, encoding="utf-8") as f:
+            smtext = f.read()
+        for p in pages:
+            rel = os.path.relpath(p, ROOT)
+            if rel == "404.html":
+                if SITE_URL + rel in smtext:
+                    fail("sitemap.xml lists 404.html")
+                continue
+            url = SITE_URL if rel == "index.html" else SITE_URL + rel
+            if f"<loc>{url}</loc>" not in smtext:
+                fail(f"sitemap.xml does not list {url}")
+        if "<lastmod>" not in smtext:
+            fail("sitemap.xml has no lastmod")
+    rb = os.path.join(ROOT, "robots.txt")
+    if not os.path.exists(rb):
+        fail("robots.txt missing")
+    else:
+        with open(rb, encoding="utf-8") as f:
+            rtext = f.read()
+        if f"Sitemap: {SITE_URL}sitemap.xml" not in rtext:
+            fail("robots.txt does not point at the sitemap")
+        if "Disallow: /" in rtext.replace("Disallow: /\n", "X") and False:
+            pass
+        if not re.search(r"User-agent:\s*\*", rtext):
+            fail("robots.txt has no User-agent: * block")
+    for extra in ("llms.txt", "CNAME", "site.webmanifest", "favicon.ico", "favicon.svg",
+                  "apple-touch-icon.png", "icon-192.png", "icon-512.png", "og-image.png"):
+        if not os.path.exists(os.path.join(ROOT, extra)):
+            fail(f"{extra} missing")
+    llms = os.path.join(ROOT, "llms.txt")
+    if os.path.exists(llms):
+        with open(llms, encoding="utf-8") as f:
+            check_banned("llms.txt", f.read())
+    cname = os.path.join(ROOT, "CNAME")
+    if os.path.exists(cname):
+        with open(cname, encoding="utf-8") as f:
+            if f.read().strip() != "leeamapplications.com":
+                fail("CNAME does not contain leeamapplications.com")
+    wm = os.path.join(ROOT, "site.webmanifest")
+    if os.path.exists(wm):
+        try:
+            with open(wm, encoding="utf-8") as f:
+                json.load(f)
+        except json.JSONDecodeError as e:
+            fail(f"site.webmanifest does not parse ({e})")
+
+
+def main():
+    pages = sorted(
+        os.path.join(ROOT, f) for f in os.listdir(ROOT) if f.endswith(".html")
+    )
+    if not pages:
+        fail("no HTML pages found in the site folder")
+    seen_titles, seen_descs = set(), set()
+    for p in pages:
+        check_page(p, seen_titles, seen_descs)
+    check_css()
+    check_site_files(pages)
+
+    for p in passes:
+        print("PASS  " + p)
+    for f in failures:
+        print("FAIL  " + f)
+    print()
+    print(f"{len(pages)} page(s) checked, {len(passes)} pass line(s), {len(failures)} failure(s)")
+    if failures:
+        print("RESULT: FAIL")
+        sys.exit(1)
+    print("RESULT: PASS")
+
+
+if __name__ == "__main__":
+    main()

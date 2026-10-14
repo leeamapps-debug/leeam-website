@@ -1,0 +1,128 @@
+RootWebArea: "Leeam Applications: Apps that work for everyone"
+  link: "Skip to main content" -> index.html#main
+    text: "Skip to main content"
+  banner
+    link: "Leeam Applications home page" -> index.html
+      image: "Leeam Applications home page"
+    navigation: "Main"
+      list
+        listitem
+          link: "Home" -> index.html
+            text: "Home"
+        listitem
+          link: "Apps" -> apps.html
+            text: "Apps"
+        listitem
+          link: "Contact" -> contact.html
+            text: "Contact"
+  main
+    region: "Apps that work for everyone."
+      image: "Leeam Applications logo"
+      heading: "Apps that work for everyone." level 1
+        text: "Apps that work for everyone."
+      paragraph
+        text: "We're an independent app studio building simple, helpful apps, designed from day one for blind and visually impaired people and made for all."
+      link: "See our apps" -> apps.html
+        text: "See our apps"
+    region: "News"
+      heading: "News" level 2
+        text: "News"
+      list
+        listitem
+          time
+            text: "(date the site goes live)"
+          heading: "Welcome to our new website." level 3
+            text: "Welcome to our new website."
+          paragraph
+            text: "This is the new home of Leeam Applications. Here you'll find our apps, our story and the latest news."
+        listitem
+          time
+            text: "12 October 2026"
+          heading: "RYX is with Apple for review." level 3
+            text: "RYX is with Apple for review."
+          paragraph
+            text: "Our first app, RYX, an AI voice calendar and planner, has been sent to Apple for App Store review. We'll share the news here as soon as it's live."
+        listitem
+          time
+            text: "30 September 2026"
+          heading: "RYX testing opens on iPhone and Android." level 3
+            text: "RYX testing opens on iPhone and Android."
+          paragraph
+            text: "Anyone with an iPhone can now try RYX early through Apple's TestFlight beta, and our Android testers have started using it through Google Play. Find out more at"
+            link: "ryxapp.com" -> https://ryxapp.com/
+              text: "ryxapp.com"
+            text: "."
+    region: "About us"
+      figure
+        image: "Photo coming soon"
+      heading: "About us" level 2
+        text: "About us"
+      paragraph
+        text: "We're Liam and Lee, and Leeam Applications is our app studio, based in Northamptonshire, UK."
+      paragraph
+        text: "We met in 2004, hanging around the same housing estate with the same group of mates. We clicked straight away: same sense of humour, always up for a laugh, and …"
+      paragraph
+        text: "Over the years we talked about starting a business more times than we can count. We even researched opening a bar in Magaluf, right down to what it would take. …"
+      paragraph
+        text: "Coming out the other side, we met up for breakfast one morning and got talking about building an app. That conversation became Leeam Applications. The name is j…"
+      paragraph
+        text: "We're not traditional developers. We taught ourselves from scratch and build with the help of AI. One of us works entirely by screen reader and one of us doesn'…"
+      paragraph
+        text: "Our aim is simple: apps that genuinely help people, and that anyone can use. Every idea and every decision is made by both of us, usually over a weekly catch-up…"
+    region: "Liam"
+      heading: "Liam" level 2
+        text: "Liam"
+      paragraph
+        text: "I'm Liam. I spent my career in warehouse logistics management, always looking to move up, and what I loved most was helping other people progress too."
+      paragraph
+        text: "Type 1 diabetes changed all that. In January 2022 I was diagnosed with kidney failure. I had to leave my job, I lost my sight along the way, and in April 2025 I…"
+      paragraph
+        text: "My wife was beside me through all of it, taking me to every appointment, caring for me daily and lifting me when I struggled, all while working full time. Leeam…"
+      paragraph
+        text: "I always wanted to run my own business, but I never knew what it would be. The idea only came to me after I lost my sight. It showed me how inaccessible the wor…"
+      paragraph
+        text: "Before I lost my sight I played snooker and pool in competitions around the country. I have always loved cars and motorsport, and I still never miss a Formula 1…"
+      figure
+        image: "Photo coming soon"
+    region: "Lee"
+      heading: "Lee" level 2
+        text: "Lee"
+      paragraph
+        text: "Hello I'm Lee,"
+      paragraph
+        text: "My journey has been anything but linear, taking me from retail and warehousing to working as a vehicle mechanic and in security. Across all these diverse roles,…"
+      paragraph
+        text: "Coming through those dark times gave birth to Leeam Applications. Running my own business has long been a dream, but creating applications that genuinely suppor…"
+      figure
+        image: "Photo coming soon"
+  contentinfo
+    navigation: "Footer"
+      list
+        listitem
+          link: "Apps" -> apps.html
+            text: "Apps"
+        listitem
+          link: "Contact" -> contact.html
+            text: "Contact"
+        listitem
+          link: "Privacy" -> privacy.html
+            text: "Privacy"
+        listitem
+          link: "Accessibility" -> accessibility.html
+            text: "Accessibility"
+    heading: "Leeam Applications on social media" level 2
+      text: "Leeam Applications on social media"
+    list
+      listitem
+        link: "Leeam Applications on Facebook" -> https://www.facebook.com/profile.php?id=61582232072676
+          text: "Facebook"
+      listitem
+        link: "Leeam Applications on Instagram" -> https://www.instagram.com/leeam_applications/
+          text: "Instagram"
+      listitem
+        link: "Leeam Applications on TikTok" -> https://www.tiktok.com/@leeamapps
+          text: "TikTok"
+      listitem
+        link: "Leeam Applications on YouTube" -> https://www.youtube.com/@LeeamApplications
+          text: "YouTube"
+    text: "© 2026 Leeam Applications"

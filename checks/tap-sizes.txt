@@ -1,0 +1,178 @@
+PASS  index.html at 375px: "" 178 by 44
+PASS  index.html at 375px: "Home" 74 by 44
+PASS  index.html at 375px: "Apps" 70 by 44
+PASS  index.html at 375px: "Contact" 94 by 44
+PASS  index.html at 375px: "See our apps" 162 by 53
+note  index.html at 375px: "ryxapp.com" 90 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+PASS  index.html at 375px: "Apps" 56 by 44
+PASS  index.html at 375px: "Contact" 82 by 44
+PASS  index.html at 375px: "Privacy" 76 by 44
+PASS  index.html at 375px: "Accessibility" 124 by 44
+PASS  index.html at 375px: "Leeam Applications on Facebook" 114 by 46
+PASS  index.html at 375px: "Leeam Applications on Instagram" 117 by 46
+PASS  index.html at 375px: "Leeam Applications on TikTok" 122 by 46
+PASS  index.html at 375px: "Leeam Applications on YouTube" 141 by 46
+PASS  index.html at 1280px: "" 178 by 44
+PASS  index.html at 1280px: "Home" 74 by 44
+PASS  index.html at 1280px: "Apps" 70 by 44
+PASS  index.html at 1280px: "Contact" 94 by 44
+PASS  index.html at 1280px: "See our apps" 162 by 53
+note  index.html at 1280px: "ryxapp.com" 90 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+PASS  index.html at 1280px: "Apps" 56 by 44
+PASS  index.html at 1280px: "Contact" 82 by 44
+PASS  index.html at 1280px: "Privacy" 76 by 44
+PASS  index.html at 1280px: "Accessibility" 124 by 44
+PASS  index.html at 1280px: "Leeam Applications on Facebook" 114 by 46
+PASS  index.html at 1280px: "Leeam Applications on Instagram" 117 by 46
+PASS  index.html at 1280px: "Leeam Applications on TikTok" 122 by 46
+PASS  index.html at 1280px: "Leeam Applications on YouTube" 141 by 46
+PASS  apps.html at 375px: "" 178 by 44
+PASS  apps.html at 375px: "Home" 74 by 44
+PASS  apps.html at 375px: "Apps" 70 by 44
+PASS  apps.html at 375px: "Contact" 94 by 44
+PASS  apps.html at 375px: "Join the iPhone beta on TestFlight" 293 by 81
+PASS  apps.html at 375px: "Visit ryxapp.com" 130 by 44
+PASS  apps.html at 375px: "Apps" 56 by 44
+PASS  apps.html at 375px: "Contact" 82 by 44
+PASS  apps.html at 375px: "Privacy" 76 by 44
+PASS  apps.html at 375px: "Accessibility" 124 by 44
+PASS  apps.html at 375px: "Leeam Applications on Facebook" 114 by 46
+PASS  apps.html at 375px: "Leeam Applications on Instagram" 117 by 46
+PASS  apps.html at 375px: "Leeam Applications on TikTok" 122 by 46
+PASS  apps.html at 375px: "Leeam Applications on YouTube" 141 by 46
+PASS  apps.html at 1280px: "" 178 by 44
+PASS  apps.html at 1280px: "Home" 74 by 44
+PASS  apps.html at 1280px: "Apps" 70 by 44
+PASS  apps.html at 1280px: "Contact" 94 by 44
+PASS  apps.html at 1280px: "Join the iPhone beta on TestFlight" 343 by 53
+PASS  apps.html at 1280px: "Visit ryxapp.com" 130 by 44
+PASS  apps.html at 1280px: "Apps" 56 by 44
+PASS  apps.html at 1280px: "Contact" 82 by 44
+PASS  apps.html at 1280px: "Privacy" 76 by 44
+PASS  apps.html at 1280px: "Accessibility" 124 by 44
+PASS  apps.html at 1280px: "Leeam Applications on Facebook" 114 by 46
+PASS  apps.html at 1280px: "Leeam Applications on Instagram" 117 by 46
+PASS  apps.html at 1280px: "Leeam Applications on TikTok" 122 by 46
+PASS  apps.html at 1280px: "Leeam Applications on YouTube" 141 by 46
+PASS  contact.html at 375px: "" 178 by 44
+PASS  contact.html at 375px: "Home" 74 by 44
+PASS  contact.html at 375px: "Apps" 70 by 44
+PASS  contact.html at 375px: "Contact" 94 by 44
+PASS  contact.html at 375px: "info@leeamapplications.com" 229 by 44
+PASS  contact.html at 375px: "Leeam Applications on Facebook" 134 by 60
+PASS  contact.html at 375px: "Leeam Applications on Instagram" 137 by 60
+PASS  contact.html at 375px: "Leeam Applications on TikTok" 152 by 68
+PASS  contact.html at 375px: "Leeam Applications on YouTube" 173 by 62
+PASS  contact.html at 375px: "Apps" 56 by 44
+PASS  contact.html at 375px: "Contact" 82 by 44
+PASS  contact.html at 375px: "Privacy" 76 by 44
+PASS  contact.html at 375px: "Accessibility" 124 by 44
+PASS  contact.html at 375px: "Leeam Applications on Facebook" 114 by 46
+PASS  contact.html at 375px: "Leeam Applications on Instagram" 117 by 46
+PASS  contact.html at 375px: "Leeam Applications on TikTok" 122 by 46
+PASS  contact.html at 375px: "Leeam Applications on YouTube" 141 by 46
+PASS  contact.html at 1280px: "" 178 by 44
+PASS  contact.html at 1280px: "Home" 74 by 44
+PASS  contact.html at 1280px: "Apps" 70 by 44
+PASS  contact.html at 1280px: "Contact" 94 by 44
+PASS  contact.html at 1280px: "info@leeamapplications.com" 451 by 62
+PASS  contact.html at 1280px: "Leeam Applications on Facebook" 134 by 60
+PASS  contact.html at 1280px: "Leeam Applications on Instagram" 137 by 60
+PASS  contact.html at 1280px: "Leeam Applications on TikTok" 152 by 68
+PASS  contact.html at 1280px: "Leeam Applications on YouTube" 173 by 62
+PASS  contact.html at 1280px: "Apps" 56 by 44
+PASS  contact.html at 1280px: "Contact" 82 by 44
+PASS  contact.html at 1280px: "Privacy" 76 by 44
+PASS  contact.html at 1280px: "Accessibility" 124 by 44
+PASS  contact.html at 1280px: "Leeam Applications on Facebook" 114 by 46
+PASS  contact.html at 1280px: "Leeam Applications on Instagram" 117 by 46
+PASS  contact.html at 1280px: "Leeam Applications on TikTok" 122 by 46
+PASS  contact.html at 1280px: "Leeam Applications on YouTube" 141 by 46
+PASS  accessibility.html at 375px: "" 178 by 44
+PASS  accessibility.html at 375px: "Home" 74 by 44
+PASS  accessibility.html at 375px: "Apps" 70 by 44
+PASS  accessibility.html at 375px: "Contact" 94 by 44
+note  accessibility.html at 375px: "info@leeamapplications.com" 226 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+PASS  accessibility.html at 375px: "Apps" 56 by 44
+PASS  accessibility.html at 375px: "Contact" 82 by 44
+PASS  accessibility.html at 375px: "Privacy" 76 by 44
+PASS  accessibility.html at 375px: "Accessibility" 124 by 44
+PASS  accessibility.html at 375px: "Leeam Applications on Facebook" 114 by 46
+PASS  accessibility.html at 375px: "Leeam Applications on Instagram" 117 by 46
+PASS  accessibility.html at 375px: "Leeam Applications on TikTok" 122 by 46
+PASS  accessibility.html at 375px: "Leeam Applications on YouTube" 141 by 46
+PASS  accessibility.html at 1280px: "" 178 by 44
+PASS  accessibility.html at 1280px: "Home" 74 by 44
+PASS  accessibility.html at 1280px: "Apps" 70 by 44
+PASS  accessibility.html at 1280px: "Contact" 94 by 44
+note  accessibility.html at 1280px: "info@leeamapplications.com" 226 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+PASS  accessibility.html at 1280px: "Apps" 56 by 44
+PASS  accessibility.html at 1280px: "Contact" 82 by 44
+PASS  accessibility.html at 1280px: "Privacy" 76 by 44
+PASS  accessibility.html at 1280px: "Accessibility" 124 by 44
+PASS  accessibility.html at 1280px: "Leeam Applications on Facebook" 114 by 46
+PASS  accessibility.html at 1280px: "Leeam Applications on Instagram" 117 by 46
+PASS  accessibility.html at 1280px: "Leeam Applications on TikTok" 122 by 46
+PASS  accessibility.html at 1280px: "Leeam Applications on YouTube" 141 by 46
+PASS  privacy.html at 375px: "" 178 by 44
+PASS  privacy.html at 375px: "Home" 74 by 44
+PASS  privacy.html at 375px: "Apps" 70 by 44
+PASS  privacy.html at 375px: "Contact" 94 by 44
+note  privacy.html at 375px: "info@leeamapplications.com" 226 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+note  privacy.html at 375px: "ryxapp.com/privacy.html" 191 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+note  privacy.html at 375px: "GitHub General Privacy Statement" 270 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+note  privacy.html at 375px: "info@leeamapplications.com" 226 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+note  privacy.html at 375px: "ico.org.uk" 76 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+PASS  privacy.html at 375px: "Apps" 56 by 44
+PASS  privacy.html at 375px: "Contact" 82 by 44
+PASS  privacy.html at 375px: "Privacy" 76 by 44
+PASS  privacy.html at 375px: "Accessibility" 124 by 44
+PASS  privacy.html at 375px: "Leeam Applications on Facebook" 114 by 46
+PASS  privacy.html at 375px: "Leeam Applications on Instagram" 117 by 46
+PASS  privacy.html at 375px: "Leeam Applications on TikTok" 122 by 46
+PASS  privacy.html at 375px: "Leeam Applications on YouTube" 141 by 46
+PASS  privacy.html at 1280px: "" 178 by 44
+PASS  privacy.html at 1280px: "Home" 74 by 44
+PASS  privacy.html at 1280px: "Apps" 70 by 44
+PASS  privacy.html at 1280px: "Contact" 94 by 44
+note  privacy.html at 1280px: "info@leeamapplications.com" 226 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+note  privacy.html at 1280px: "ryxapp.com/privacy.html" 191 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+note  privacy.html at 1280px: "GitHub General Privacy Statement" 270 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+note  privacy.html at 1280px: "info@leeamapplications.com" 226 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+note  privacy.html at 1280px: "ico.org.uk" 76 by 22 (a link inside a sentence; exempt under WCAG 2.5.8)
+PASS  privacy.html at 1280px: "Apps" 56 by 44
+PASS  privacy.html at 1280px: "Contact" 82 by 44
+PASS  privacy.html at 1280px: "Privacy" 76 by 44
+PASS  privacy.html at 1280px: "Accessibility" 124 by 44
+PASS  privacy.html at 1280px: "Leeam Applications on Facebook" 114 by 46
+PASS  privacy.html at 1280px: "Leeam Applications on Instagram" 117 by 46
+PASS  privacy.html at 1280px: "Leeam Applications on TikTok" 122 by 46
+PASS  privacy.html at 1280px: "Leeam Applications on YouTube" 141 by 46
+PASS  404.html at 375px: "" 178 by 44
+PASS  404.html at 375px: "Home" 74 by 44
+PASS  404.html at 375px: "Apps" 70 by 44
+PASS  404.html at 375px: "Contact" 94 by 44
+PASS  404.html at 375px: "Go to the home page" 229 by 53
+PASS  404.html at 375px: "See our apps" 104 by 44
+PASS  404.html at 375px: "Apps" 56 by 44
+PASS  404.html at 375px: "Contact" 82 by 44
+PASS  404.html at 375px: "Privacy" 76 by 44
+PASS  404.html at 375px: "Accessibility" 124 by 44
+PASS  404.html at 375px: "Leeam Applications on Facebook" 114 by 46
+PASS  404.html at 375px: "Leeam Applications on Instagram" 117 by 46
+PASS  404.html at 375px: "Leeam Applications on TikTok" 122 by 46
+PASS  404.html at 375px: "Leeam Applications on YouTube" 141 by 46
+PASS  404.html at 1280px: "" 178 by 44
+PASS  404.html at 1280px: "Home" 74 by 44
+PASS  404.html at 1280px: "Apps" 70 by 44
+PASS  404.html at 1280px: "Contact" 94 by 44
+PASS  404.html at 1280px: "Go to the home page" 229 by 53
+PASS  404.html at 1280px: "See our apps" 104 by 44
+PASS  404.html at 1280px: "Apps" 56 by 44
+PASS  404.html at 1280px: "Contact" 82 by 44
+PASS  404.html at 1280px: "Privacy" 76 by 44
+PASS  404.html at 1280px: "Accessibility" 124 by 44
+PASS  404.html at 1280px: "Leeam Applications on Facebook" 114 by 46
+PASS  404.html at 1280px: "Leeam Applications on Instagram" 117 by 46
+PASS  404.html at 1280px: "Leeam Applications on TikTok" 122 by 46
+PASS  404.html at 1280px: "Leeam Applications on YouTube" 141 by 46

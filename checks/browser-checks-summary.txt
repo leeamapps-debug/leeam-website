@@ -1,0 +1,60 @@
+screenshot index.html at 375px: index-375.png (7073px tall)
+screenshot index.html at 1280px: index-1280.png (5363px tall)
+screenshot apps.html at 375px: apps-375.png (1427px tall)
+screenshot apps.html at 1280px: apps-1280.png (1215px tall)
+screenshot contact.html at 375px: contact-375.png (1161px tall)
+screenshot contact.html at 1280px: contact-1280.png (1136px tall)
+screenshot accessibility.html at 375px: accessibility-375.png (1581px tall)
+screenshot accessibility.html at 1280px: accessibility-1280.png (1197px tall)
+screenshot privacy.html at 375px: privacy-375.png (3167px tall)
+screenshot privacy.html at 1280px: privacy-1280.png (2401px tall)
+screenshot 404.html at 375px: 404-375.png (949px tall)
+screenshot 404.html at 1280px: 404-1280.png (900px tall)
+screenshot index.html at 200 percent zoom (1280 pixel window): index-1280-zoom200.png (6190 layout px tall)
+
+PASS  index.html at 375px: viewport 375, document scroll width 375, body scroll width 375
+PASS  index.html at 1280px: viewport 1280, document scroll width 1280, body scroll width 1280
+PASS  index.html at 320px: viewport 320, document scroll width 320, body scroll width 320
+PASS  apps.html at 375px: viewport 375, document scroll width 375, body scroll width 375
+PASS  apps.html at 1280px: viewport 1280, document scroll width 1280, body scroll width 1280
+PASS  apps.html at 320px: viewport 320, document scroll width 320, body scroll width 320
+PASS  contact.html at 375px: viewport 375, document scroll width 375, body scroll width 375
+PASS  contact.html at 1280px: viewport 1280, document scroll width 1280, body scroll width 1280
+PASS  contact.html at 320px: viewport 320, document scroll width 320, body scroll width 320
+PASS  accessibility.html at 375px: viewport 375, document scroll width 375, body scroll width 375
+PASS  accessibility.html at 1280px: viewport 1280, document scroll width 1280, body scroll width 1280
+PASS  accessibility.html at 320px: viewport 320, document scroll width 320, body scroll width 320
+PASS  privacy.html at 375px: viewport 375, document scroll width 375, body scroll width 375
+PASS  privacy.html at 1280px: viewport 1280, document scroll width 1280, body scroll width 1280
+PASS  privacy.html at 320px: viewport 320, document scroll width 320, body scroll width 320
+PASS  404.html at 375px: viewport 375, document scroll width 375, body scroll width 375
+PASS  404.html at 1280px: viewport 1280, document scroll width 1280, body scroll width 1280
+PASS  404.html at 320px: viewport 320, document scroll width 320, body scroll width 320
+PASS  index.html (200 percent zoom) at 640px: viewport 640, document scroll width 640, body scroll width 640
+
+keyboard order (home page):
+1. a "Skip to main content" -> #main  focus ring: solid 3px rgb(17, 17, 17)
+2. a "Leeam Applications home page" -> index.html  focus ring: solid 3px rgb(17, 17, 17)
+3. a "Home" -> index.html  focus ring: solid 3px rgb(17, 17, 17)
+4. a "Apps" -> apps.html  focus ring: solid 3px rgb(17, 17, 17)
+5. a "Contact" -> contact.html  focus ring: solid 3px rgb(17, 17, 17)
+6. a "See our apps" -> apps.html  focus ring: solid 3px rgb(17, 17, 17)
+7. a "ryxapp.com" -> https://ryxapp.com  focus ring: solid 3px rgb(17, 17, 17)
+8. a "Apps" -> apps.html  focus ring: solid 3px rgb(17, 17, 17)
+9. a "Contact" -> contact.html  focus ring: solid 3px rgb(17, 17, 17)
+10. a "Privacy" -> privacy.html  focus ring: solid 3px rgb(17, 17, 17)
+11. a "Accessibility" -> accessibility.html  focus ring: solid 3px rgb(17, 17, 17)
+12. a "Leeam Applications on Facebook" -> https://www.facebook.com/profile.php?id=61582232072676  focus ring: solid 3px rgb(17, 17, 17)
+13. a "Leeam Applications on Instagram" -> https://www.instagram.com/leeam_applications/  focus ring: solid 3px rgb(17, 17, 17)
+14. a "Leeam Applications on TikTok" -> https://www.tiktok.com/@leeamapps  focus ring: solid 3px rgb(17, 17, 17)
+15. a "Leeam Applications on YouTube" -> https://www.youtube.com/@LeeamApplications  focus ring: solid 3px rgb(17, 17, 17)
+16. (focus returned to the page body: end of the tab order)
+
+index.html: axe-core 4.10.3, 36 rules passed, 0 violations, 0 needing manual review
+apps.html: axe-core 4.10.3, 35 rules passed, 0 violations, 0 needing manual review
+contact.html: axe-core 4.10.3, 34 rules passed, 0 violations, 0 needing manual review
+accessibility.html: axe-core 4.10.3, 35 rules passed, 0 violations, 0 needing manual review
+privacy.html: axe-core 4.10.3, 35 rules passed, 0 violations, 0 needing manual review
+404.html: axe-core 4.10.3, 34 rules passed, 0 violations, 0 needing manual review
+
+RESULT: PASS (0 failure line(s))

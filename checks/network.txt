@@ -1,0 +1,24 @@
+21 distinct URLs requested while loading every page at every width.
+PASS  requests to any other host: 0
+
+/404.html
+/accessibility.html
+/apps.html
+/contact.html
+/favicon.ico
+/favicon.svg
+/fonts/AtkinsonHyperlegible-Regular.woff2
+/fonts/SpaceGrotesk-variable.woff2
+/images/leeam-logo-full.svg
+/images/leeam-logo-one-line.svg
+/images/mesh.svg
+/images/photo-both.jpg
+/images/photo-lee.jpg
+/images/photo-liam.jpg
+/images/ryx-icon.png
+/images/social-tiktok.png
+/images/social-youtube.png
+/index.html
+/privacy.html
+/site.webmanifest
+/styles.css

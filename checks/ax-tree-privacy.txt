@@ -1,0 +1,100 @@
+RootWebArea: "Privacy notice | Leeam Applications"
+  link: "Skip to main content" -> privacy.html#main
+    text: "Skip to main content"
+  banner
+    link: "Leeam Applications home page" -> index.html
+      image: "Leeam Applications home page"
+    navigation: "Main"
+      list
+        listitem
+          link: "Home" -> index.html
+            text: "Home"
+        listitem
+          link: "Apps" -> apps.html
+            text: "Apps"
+        listitem
+          link: "Contact" -> contact.html
+            text: "Contact"
+  main
+    heading: "Privacy notice" level 1
+      text: "Privacy notice"
+    paragraph
+      text: "This notice explains what happens to your information when you visit this website, leeamapplications.com. It is written in plain English because we think privac…"
+    heading: "Who we are" level 2
+      text: "Who we are"
+    paragraph
+      text: "Leeam Applications is an independent app studio in the United Kingdom. If you have any question about this notice, email us at"
+      link: "info@leeamapplications.com" -> mailto:info@leeamapplications.com
+        text: "info@leeamapplications.com"
+      text: "."
+    heading: "What this notice covers" level 2
+      text: "What this notice covers"
+    paragraph
+      text: "This notice covers this website only. Each of our apps has its own privacy policy, because an app can do things a website does not. The privacy policy for RYX i…"
+      link: "ryxapp.com/privacy.html" -> https://ryxapp.com/privacy.html
+        text: "ryxapp.com/privacy.html"
+      text: "."
+    heading: "No cookies, no tracking" level 2
+      text: "No cookies, no tracking"
+    paragraph
+      text: "This website sets no cookies. It has no analytics, no trackers and no adverts. The fonts it uses are stored on the website itself, so nothing is loaded from a f…"
+    heading: "Where the website is hosted" level 2
+      text: "Where the website is hosted"
+    paragraph
+      text: "This website is hosted by GitHub Pages, a service run by GitHub. When you visit, GitHub may process your IP address in its server logs for security reasons, for…"
+      link: "GitHub General Privacy Statement" -> https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
+        text: "GitHub General Privacy Statement"
+      text: "."
+    heading: "If you email us" level 2
+      text: "If you email us"
+    paragraph
+      text: "If you send us an email, we use your email address and what you wrote only to reply to you. We do not add you to any mailing list, and we do not share your deta…"
+    heading: "Your rights" level 2
+      text: "Your rights"
+    paragraph
+      text: "Under UK data protection law, including the UK GDPR, you have rights over your personal information. You can ask what we hold about you, ask for it to be correc…"
+      link: "info@leeamapplications.com" -> mailto:info@leeamapplications.com
+        text: "info@leeamapplications.com"
+      text: "and we will help."
+    paragraph
+      text: "If you are not happy with how we have handled your information, you can complain to the Information Commissioner's Office, the UK's data protection regulator, a…"
+      link: "ico.org.uk" -> https://ico.org.uk/
+        text: "ico.org.uk"
+      text: "."
+    heading: "Changes to this notice" level 2
+      text: "Changes to this notice"
+    paragraph
+      text: "If we change this notice, we will update this page and the date below."
+    paragraph
+      text: "Effective date: (date the site goes live)."
+  contentinfo
+    navigation: "Footer"
+      list
+        listitem
+          link: "Apps" -> apps.html
+            text: "Apps"
+        listitem
+          link: "Contact" -> contact.html
+            text: "Contact"
+        listitem
+          link: "Privacy" -> privacy.html
+            text: "Privacy"
+        listitem
+          link: "Accessibility" -> accessibility.html
+            text: "Accessibility"
+    heading: "Leeam Applications on social media" level 2
+      text: "Leeam Applications on social media"
+    list
+      listitem
+        link: "Leeam Applications on Facebook" -> https://www.facebook.com/profile.php?id=61582232072676
+          text: "Facebook"
+      listitem
+        link: "Leeam Applications on Instagram" -> https://www.instagram.com/leeam_applications/
+          text: "Instagram"
+      listitem
+        link: "Leeam Applications on TikTok" -> https://www.tiktok.com/@leeamapps
+          text: "TikTok"
+      listitem
+        link: "Leeam Applications on YouTube" -> https://www.youtube.com/@LeeamApplications
+          text: "YouTube"
+    text: "© 2026 Leeam Applications"

@@ -1,0 +1,6 @@
+index.html: axe-core 4.10.3, 36 rules passed, 0 violations, 0 needing manual review
+apps.html: axe-core 4.10.3, 35 rules passed, 0 violations, 0 needing manual review
+contact.html: axe-core 4.10.3, 34 rules passed, 0 violations, 0 needing manual review
+accessibility.html: axe-core 4.10.3, 35 rules passed, 0 violations, 0 needing manual review
+privacy.html: axe-core 4.10.3, 35 rules passed, 0 violations, 0 needing manual review
+404.html: axe-core 4.10.3, 34 rules passed, 0 violations, 0 needing manual review

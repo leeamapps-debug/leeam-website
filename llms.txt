@@ -1,0 +1,32 @@
+# Leeam Applications
+
+> Leeam Applications is an independent app studio from Northamptonshire, UK, run by Liam and Lee. Our aim is simple: apps that work for everyone, designed from day one for blind and visually impaired people and made for all.
+
+## About Leeam Applications
+
+- Leeam Applications is a small, independent app studio based in Northamptonshire, United Kingdom, founded and run by two friends, Liam and Lee.
+- One of the two founders is blind and uses a screen reader every day. Everything Leeam Applications makes is built and tested with a screen reader from the very first day, and is designed to work for everyone.
+- The studio builds simple, helpful apps for iPhone and Android.
+- Contact: info@leeamapplications.com
+- Website: https://leeamapplications.com/
+
+## Apps
+
+- RYX: AI Voice Calendar and Tasks. Tap the orb, say what you need, and RYX puts it in your calendar or your to-do list. It answers questions about your day, finds your free time and reminds you when it matters. It works beautifully with VoiceOver and TalkBack. RYX is made by Leeam Applications.
+- Where to get RYX today: an iPhone beta through Apple TestFlight at https://testflight.apple.com/join/HhPnMHfr. Coming soon to Google Play.
+- RYX website: https://ryxapp.com
+
+## Pages on this website
+
+- Home and about us: https://leeamapplications.com/
+- Our apps: https://leeamapplications.com/apps.html
+- Contact: https://leeamapplications.com/contact.html
+- Accessibility statement: https://leeamapplications.com/accessibility.html
+- Privacy notice: https://leeamapplications.com/privacy.html
+
+## Social media
+
+- Facebook: https://www.facebook.com/profile.php?id=61582232072676
+- Instagram: https://www.instagram.com/leeam_applications/
+- TikTok: https://www.tiktok.com/@leeamapps
+- YouTube: https://www.youtube.com/@LeeamApplications
