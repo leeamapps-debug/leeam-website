@@ -3,6 +3,9 @@
    Every colour lives in the tokens below so any of them can be changed in one place. */
 
 :root {
+  /* The site is designed light only (Liam, 15 October 2026): browsers must not repaint it dark */
+  color-scheme: only light;
+
   /* Colours, decided by Liam 14 October 2026 */
   --page: #D9DCE1;        /* cool grey page background */
   --panel: #FFFFFF;       /* white content panels */
@@ -597,6 +600,19 @@ main .wrap > * + * {
 
 .social-list.large img {
   width: 40px;
+}
+
+/* The YouTube logo (15 October 2026) is wider than tall (110 by 79 pixels, cropped to the visible logo), so it is
+   sized by height to match the other three: 28 pixels tall in the footer (about 39 wide, leaving over 8 pixels of
+   clear space each side inside the 56 pixel tile) and 40 pixels tall on the contact page. Only YouTube is affected. */
+.social-list img[src$="social-youtube.png"] {
+  width: auto;
+  height: 28px;
+}
+
+.social-list.large img[src$="social-youtube.png"] {
+  width: auto;
+  height: 40px;
 }
 
 .social-list.large span {

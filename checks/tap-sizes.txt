@@ -62,7 +62,7 @@ PASS  contact.html at 375px: "info@leeamapplications.com" 229 by 44
 PASS  contact.html at 375px: "Leeam Applications on Facebook" 267 by 60
 PASS  contact.html at 375px: "Leeam Applications on Instagram" 268 by 60
 PASS  contact.html at 375px: "Leeam Applications on TikTok" 206 by 60
-PASS  contact.html at 375px: "Leeam Applications on YouTube" 282 by 60
+PASS  contact.html at 375px: "Leeam Applications on YouTube" 293 by 77
 PASS  contact.html at 375px: "Apps" 56 by 44
 PASS  contact.html at 375px: "Contact" 82 by 44
 PASS  contact.html at 375px: "Privacy" 76 by 44
@@ -79,7 +79,7 @@ PASS  contact.html at 1280px: "info@leeamapplications.com" 451 by 62
 PASS  contact.html at 1280px: "Leeam Applications on Facebook" 267 by 60
 PASS  contact.html at 1280px: "Leeam Applications on Instagram" 268 by 60
 PASS  contact.html at 1280px: "Leeam Applications on TikTok" 206 by 60
-PASS  contact.html at 1280px: "Leeam Applications on YouTube" 282 by 60
+PASS  contact.html at 1280px: "Leeam Applications on YouTube" 297 by 60
 PASS  contact.html at 1280px: "Apps" 56 by 44
 PASS  contact.html at 1280px: "Contact" 82 by 44
 PASS  contact.html at 1280px: "Privacy" 76 by 44

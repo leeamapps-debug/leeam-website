@@ -9,6 +9,7 @@ import json
 import os
 import re
 import sys
+from zlib import error as zlib_error
 from html.parser import HTMLParser
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -424,6 +425,131 @@ def check_site_files(pages):
             fail(f"site.webmanifest does not parse ({e})")
 
 
+# Prompt 06 (15 October 2026): the site is designed light only. Samsung's browser and
+# Chrome on Android may repaint a page dark unless it says otherwise, so every page
+# carries <meta name="color-scheme" content="light"> directly after the theme-color
+# meta, and the :root rule in styles.css carries color-scheme: only light.
+def check_light_only(pages):
+    clean = True
+    for p in pages:
+        name = os.path.relpath(p, ROOT)
+        root, raw = parse(p)
+        metas = find_all(root, "meta")
+        found = [m for m in metas if m.attrs.get("name") == "color-scheme"]
+        theme = [i for i, m in enumerate(metas) if m.attrs.get("name") == "theme-color"]
+        if not found:
+            fail(f'{name}: no <meta name="color-scheme" content="light"> tag')
+            clean = False
+        elif found[0].attrs.get("content", "").strip() != "light":
+            fail(f"{name}: color-scheme meta says {found[0].attrs.get('content')!r}, expected light")
+            clean = False
+        elif theme and metas.index(found[0]) != theme[0] + 1:
+            fail(f"{name}: color-scheme meta is not directly after the theme-color meta")
+            clean = False
+    path = os.path.join(ROOT, "styles.css")
+    css = open(path, encoding="utf-8").read() if os.path.exists(path) else ""
+    root_rule = re.search(r":root\s*\{([^}]*)\}", css)
+    if not root_rule:
+        fail("styles.css: no :root rule found")
+        clean = False
+    elif not re.search(r"color-scheme\s*:\s*only\s+light\s*;", root_rule.group(1)):
+        fail("styles.css: :root has no color-scheme: only light; declaration")
+        clean = False
+    if clean:
+        ok("light only: every page has the color-scheme meta tag and :root says color-scheme: only light")
+
+
+def png_alpha(path):
+    """Read a PNG with the standard library only. Returns (width, height, rows of alpha values).
+    Handles the common 8-bit RGBA and grey-plus-alpha layouts without interlacing."""
+    import struct
+    import zlib
+    with open(path, "rb") as f:
+        data = f.read()
+    if data[:8] != b"\x89PNG\r\n\x1a\n":
+        raise ValueError("not a PNG file")
+    pos, idat, ihdr = 8, [], None
+    while pos + 8 <= len(data):
+        length, ctype = struct.unpack(">I4s", data[pos:pos + 8])
+        body = data[pos + 8:pos + 8 + length]
+        if ctype == b"IHDR":
+            ihdr = struct.unpack(">IIBBBBB", body)
+        elif ctype == b"IDAT":
+            idat.append(body)
+        elif ctype == b"IEND":
+            break
+        pos += 12 + length
+    if ihdr is None:
+        raise ValueError("no IHDR chunk")
+    w, h, depth, colour, _, _, interlace = ihdr
+    if depth != 8 or colour not in (4, 6) or interlace != 0:
+        raise ValueError(f"unsupported PNG layout (bit depth {depth}, colour type {colour}, interlace {interlace})")
+    bpp = 2 if colour == 4 else 4
+    raw = zlib.decompress(b"".join(idat))
+    stride = w * bpp
+    prev, rows, off = bytearray(stride), [], 0
+    for _ in range(h):
+        filt = raw[off]
+        line = bytearray(raw[off + 1:off + 1 + stride])
+        off += 1 + stride
+        for i in range(stride):
+            a = line[i - bpp] if i >= bpp else 0
+            b = prev[i]
+            c = prev[i - bpp] if i >= bpp else 0
+            if filt == 1:
+                line[i] = (line[i] + a) & 255
+            elif filt == 2:
+                line[i] = (line[i] + b) & 255
+            elif filt == 3:
+                line[i] = (line[i] + (a + b) // 2) & 255
+            elif filt == 4:
+                p = a + b - c
+                pa, pb, pc = abs(p - a), abs(p - b), abs(p - c)
+                pred = a if (pa <= pb and pa <= pc) else (b if pb <= pc else c)
+                line[i] = (line[i] + pred) & 255
+        rows.append([line[i] for i in range(bpp - 1, stride, bpp)])
+        prev = line
+    return w, h, rows
+
+
+# Prompt 06 (15 October 2026): the YouTube logo file must be cropped to its visible
+# logo (no fully transparent rows or columns around the edges), and every YouTube
+# img tag must carry the file's real pixel size, so it can be sized by height in CSS.
+def check_youtube_logo(pages):
+    rel = "images/social-youtube.png"
+    path = os.path.join(ROOT, rel)
+    if not os.path.exists(path):
+        fail(f"{rel} missing")
+        return
+    try:
+        w, h, alpha = png_alpha(path)
+    except (ValueError, zlib_error) as e:
+        fail(f"{rel}: could not read PNG ({e})")
+        return
+    rows = [i for i, r in enumerate(alpha) if any(r)]
+    cols = [x for x in range(w) if any(r[x] for r in alpha)]
+    if not rows or not cols:
+        fail(f"{rel}: the image is fully transparent")
+        return
+    top, bottom, left, right = rows[0], rows[-1], cols[0], cols[-1]
+    clean = True
+    if top > 0 or left > 0 or bottom < h - 1 or right < w - 1:
+        fail(f"{rel}: transparent margin around the logo; visible pixels span x {left} to {right} and y {top} to {bottom} of a {w} by {h} file, so it should be cropped to {right - left + 1} by {bottom - top + 1}")
+        clean = False
+    for p in pages:
+        name = os.path.relpath(p, ROOT)
+        root, raw = parse(p)
+        for img in find_all(root, "img"):
+            if not img.attrs.get("src", "").endswith("social-youtube.png"):
+                continue
+            got = (img.attrs.get("width"), img.attrs.get("height"))
+            if got != (str(w), str(h)):
+                fail(f"{name}: YouTube img says width {got[0]} height {got[1]}, but the file is {w} by {h}")
+                clean = False
+    if clean:
+        ok(f"YouTube logo: {rel} is cropped to its visible logo ({w} by {h}) and every YouTube img tag carries that size")
+
+
 def main():
     pages = sorted(
         os.path.join(ROOT, f) for f in os.listdir(ROOT) if f.endswith(".html")
@@ -434,6 +560,8 @@ def main():
     for p in pages:
         check_page(p, seen_titles, seen_descs)
     check_css()
+    check_light_only(pages)
+    check_youtube_logo(pages)
     check_site_files(pages)
 
     for p in passes:
