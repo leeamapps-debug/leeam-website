@@ -15,6 +15,7 @@
 //   tap-sizes.txt                       the size of every link and button
 //   zero-check.txt and zero-after.png   which font draws the digits, and a close-up of the footer year and a news date
 //   social-spacing.txt                  the clear space around the Facebook logo, measured against Meta's rules
+//   contact-names.txt                   whether each account name on the contact page stays on one line at five phone widths
 //   social-footer-375.png, social-footer-1280.png, social-contact-1280.png   close-ups of the social links, magnified twice
 //
 // Usage:  node scripts/browser-checks.mjs [--axe /path/to/axe.min.js] [--zero-shot zero-before.png]
@@ -452,6 +453,41 @@ async function facebookClearSpace(page, width) {
   return results.length;
 }
 
+
+// ---------- contact page: account names stay on one line (prompt 07, 15 October 2026) ----------
+// The YouTube logo is 56 by 40 pixels on the contact page, so on small phones the account name next to it
+// could wrap, and because the names are single words they would break in the middle. This loads contact.html
+// at five phone widths and fails if any account name in the social list is taller than one line of text.
+const NAME_WIDTHS = [320, 360, 375, 390, 412];
+const nameLines = [];
+async function contactNameLines() {
+  for (const width of NAME_WIDTHS) {
+    await setViewport(width);
+    await open("contact.html");
+    const rows = await evaluate(`(() => {
+      const out = [];
+      document.querySelectorAll('.social-list.large a').forEach((a) => {
+        const span = a.querySelector('span');
+        if (!span) return;
+        const cs = getComputedStyle(span);
+        const lh = cs.lineHeight === 'normal' ? parseFloat(cs.fontSize) * 1.2 : parseFloat(cs.lineHeight);
+        const r = span.getBoundingClientRect();
+        const img = a.querySelector('img');
+        const ir = img ? img.getBoundingClientRect() : null;
+        out.push({ name: span.textContent.trim(), h: Math.round(r.height * 10) / 10, lh: Math.round(lh * 10) / 10,
+          lines: Math.round(r.height / lh), font: Math.round(parseFloat(cs.fontSize) * 10) / 10,
+          gap: ir ? Math.round((r.left - ir.right) * 10) / 10 : null,
+          link: { w: Math.round(a.getBoundingClientRect().width), h: Math.round(a.getBoundingClientRect().height) } });
+      });
+      return out;
+    })()`);
+    for (const r of rows) {
+      const ok = r.lines <= 1;
+      nameLines.push(`${ok ? "PASS" : "FAIL"}  contact.html at ${width}px: "${r.name}" is ${r.h} px tall at a line height of ${r.lh} px, so ${r.lines} line(s); font ${r.font} px; logo to name gap ${r.gap} px; link ${r.link.w} by ${r.link.h}`);
+    }
+  }
+}
+
 // ---------- run ----------
 const summary = [];
 const tapLines = [];
@@ -489,6 +525,7 @@ for (const page of PAGES) {
 }
 
 await zeroCheck();
+await contactNameLines();
 
 // home page at 200 percent zoom: a 1280 window zoomed to 200 percent lays out like a 640 pixel window drawn twice as large
 await setViewport(640, 2);
@@ -516,6 +553,7 @@ writeFileSync(
 writeFileSync(join(CHECKS, "overflow.txt"), overflowLines.join("\n") + "\n");
 writeFileSync(join(CHECKS, "tap-sizes.txt"), tapLines.join("\n") + "\n");
 writeFileSync(join(CHECKS, "fonts.txt"), fontLines.join("\n") + "\n");
+writeFileSync(join(CHECKS, "contact-names.txt"), nameLines.join("\n") + "\n");
 writeFileSync(join(CHECKS, "social-spacing.txt"), (socialLines.length ? socialLines : ["no Facebook logo image found on any page"]).join("\n") + "\n");
 if (axeSource) writeFileSync(join(CHECKS, "axe-summary.txt"), axeSummary.join("\n") + "\n");
 
@@ -526,6 +564,7 @@ const failures = [
   ...axeSummary.filter((l) => !/ 0 violations/.test(l)),
   ...zeroLines.filter((l) => l.startsWith("FAIL")),
   ...socialLines.filter((l) => l.startsWith("FAIL")),
+  ...nameLines.filter((l) => l.startsWith("FAIL")),
   ...(socialLines.length ? [] : ["no Facebook logo image found on any page"]),
 ];
 const report =
@@ -540,6 +579,8 @@ const report =
   zeroLines.join("\n") +
   "\n\nclear space around the Facebook logo:\n" +
   (socialLines.length ? socialLines.join("\n") : "FAIL  no Facebook logo image found on any page") +
+  "\n\naccount names on the contact page stay on one line:\n" +
+  nameLines.join("\n") +
   "\n\n" +
   `RESULT: ${failures.length ? "FAIL" : "PASS"} (${failures.length} failure line(s))\n`;
 writeFileSync(join(CHECKS, "browser-checks-summary.txt"), report);

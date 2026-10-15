@@ -425,10 +425,12 @@ def check_site_files(pages):
             fail(f"site.webmanifest does not parse ({e})")
 
 
-# Prompt 06 (15 October 2026): the site is designed light only. Samsung's browser and
-# Chrome on Android may repaint a page dark unless it says otherwise, so every page
-# carries <meta name="color-scheme" content="light"> directly after the theme-color
-# meta, and the :root rule in styles.css carries color-scheme: only light.
+# Prompts 06 and 07 (15 October 2026): the site is designed light only. Samsung's browser
+# and Chrome on Android may repaint a page dark unless it says otherwise, so every page
+# carries <meta name="color-scheme" content="only light"> directly after the theme-color
+# meta, and the :root rule in styles.css carries color-scheme: only light. The meta must
+# say exactly "only light": Chrome's documentation says plain "light" does not opt the
+# page out of being darkened before the stylesheet loads.
 def check_light_only(pages):
     clean = True
     for p in pages:
@@ -438,10 +440,10 @@ def check_light_only(pages):
         found = [m for m in metas if m.attrs.get("name") == "color-scheme"]
         theme = [i for i, m in enumerate(metas) if m.attrs.get("name") == "theme-color"]
         if not found:
-            fail(f'{name}: no <meta name="color-scheme" content="light"> tag')
+            fail(f'{name}: no <meta name="color-scheme" content="only light"> tag')
             clean = False
-        elif found[0].attrs.get("content", "").strip() != "light":
-            fail(f"{name}: color-scheme meta says {found[0].attrs.get('content')!r}, expected light")
+        elif found[0].attrs.get("content", "").strip() != "only light":
+            fail(f"{name}: color-scheme meta says {found[0].attrs.get('content')!r}, expected exactly 'only light'")
             clean = False
         elif theme and metas.index(found[0]) != theme[0] + 1:
             fail(f"{name}: color-scheme meta is not directly after the theme-color meta")
@@ -456,7 +458,7 @@ def check_light_only(pages):
         fail("styles.css: :root has no color-scheme: only light; declaration")
         clean = False
     if clean:
-        ok("light only: every page has the color-scheme meta tag and :root says color-scheme: only light")
+        ok("light only: every page has the color-scheme meta tag saying only light, and :root says color-scheme: only light")
 
 
 def png_alpha(path):

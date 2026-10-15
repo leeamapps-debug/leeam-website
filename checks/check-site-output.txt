@@ -8,7 +8,7 @@ PASS  contrast text on the grey page: #111111 on #D9DCE1 is 13.74:1 (needs 13.5:
 PASS  contrast black text on orange buttons: #111111 on #FF6616 is 6.44:1 (needs 6.4:1)
 PASS  contrast deep orange links on the grey page: #9A3800 on #D9DCE1 is 5.20:1 (needs 4.5:1)
 PASS  contrast deep orange links on white panels: #9A3800 on #FFFFFF is 7.14:1 (needs 4.5:1)
-PASS  light only: every page has the color-scheme meta tag and :root says color-scheme: only light
+PASS  light only: every page has the color-scheme meta tag saying only light, and :root says color-scheme: only light
 PASS  YouTube logo: images/social-youtube.png is cropped to its visible logo (110 by 79) and every YouTube img tag carries that size
 
 6 page(s) checked, 12 pass line(s), 0 failure(s)

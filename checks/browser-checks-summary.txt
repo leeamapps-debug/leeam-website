@@ -2,7 +2,7 @@ screenshot index.html at 375px: index-375.png (7026px tall)
 screenshot index.html at 1280px: index-1280.png (5373px tall)
 screenshot apps.html at 375px: apps-375.png (1379px tall)
 screenshot apps.html at 1280px: apps-1280.png (1226px tall)
-screenshot contact.html at 375px: contact-375.png (1181px tall)
+screenshot contact.html at 375px: contact-375.png (1163px tall)
 screenshot contact.html at 1280px: contact-1280.png (1342px tall)
 screenshot accessibility.html at 375px: accessibility-375.png (1505px tall)
 screenshot accessibility.html at 1280px: accessibility-1280.png (1208px tall)
@@ -64,7 +64,7 @@ PASS  index.html at 375px, footer: Facebook logo 28 by 28 px inside a 56 by 56 p
 PASS  index.html at 1280px, footer: Facebook logo 28 by 28 px inside a 56 by 56 px link; nearest other content is text "© 2026 Leeam Applications" at 36 px (needs at least 14 px, half the logo's width; a quarter is 7 px); no words inside the link
 PASS  apps.html at 375px, footer: Facebook logo 28 by 28 px inside a 56 by 56 px link; nearest other content is text "© 2026 Leeam Applications" at 36 px (needs at least 14 px, half the logo's width; a quarter is 7 px); no words inside the link
 PASS  apps.html at 1280px, footer: Facebook logo 28 by 28 px inside a 56 by 56 px link; nearest other content is text "© 2026 Leeam Applications" at 36 px (needs at least 14 px, half the logo's width; a quarter is 7 px); no words inside the link
-PASS  contact.html at 375px, contact list: Facebook logo 40 by 40 px inside a 267 by 60 px link; nearest other content is text "Leeam Applications" at 20 px (needs at least 20 px, half the logo's width; a quarter is 10 px); words inside the link: "Leeam Applications"
+PASS  contact.html at 375px, contact list: Facebook logo 40 by 40 px inside a 211 by 60 px link; nearest other content is text "Leeam Applications" at 20 px (needs at least 20 px, half the logo's width; a quarter is 10 px); words inside the link: "Leeam Applications"
 PASS  contact.html at 375px, footer: Facebook logo 28 by 28 px inside a 56 by 56 px link; nearest other content is text "© 2026 Leeam Applications" at 36 px (needs at least 14 px, half the logo's width; a quarter is 7 px); no words inside the link
 PASS  contact.html at 1280px, contact list: Facebook logo 40 by 40 px inside a 267 by 60 px link; nearest other content is text "Leeam Applications" at 20 px (needs at least 20 px, half the logo's width; a quarter is 10 px); words inside the link: "Leeam Applications"
 PASS  contact.html at 1280px, footer: Facebook logo 28 by 28 px inside a 56 by 56 px link; nearest other content is text "© 2026 Leeam Applications" at 36 px (needs at least 14 px, half the logo's width; a quarter is 7 px); no words inside the link
@@ -74,5 +74,27 @@ PASS  privacy.html at 375px, footer: Facebook logo 28 by 28 px inside a 56 by 56
 PASS  privacy.html at 1280px, footer: Facebook logo 28 by 28 px inside a 56 by 56 px link; nearest other content is text "© 2026 Leeam Applications" at 36 px (needs at least 14 px, half the logo's width; a quarter is 7 px); no words inside the link
 PASS  404.html at 375px, footer: Facebook logo 28 by 28 px inside a 56 by 56 px link; nearest other content is text "© 2026 Leeam Applications" at 36 px (needs at least 14 px, half the logo's width; a quarter is 7 px); no words inside the link
 PASS  404.html at 1280px, footer: Facebook logo 28 by 28 px inside a 56 by 56 px link; nearest other content is text "© 2026 Leeam Applications" at 36 px (needs at least 14 px, half the logo's width; a quarter is 7 px); no words inside the link
+
+account names on the contact page stay on one line:
+PASS  contact.html at 320px: "Leeam Applications" is 25.6 px tall at a line height of 25.6 px, so 1 line(s); font 16 px; logo to name gap 20 px; link 211 by 60
+PASS  contact.html at 320px: "leeam_applications" is 25.6 px tall at a line height of 25.6 px, so 1 line(s); font 16 px; logo to name gap 20 px; link 211 by 60
+PASS  contact.html at 320px: "@leeamapps" is 25.6 px tall at a line height of 25.6 px, so 1 line(s); font 16 px; logo to name gap 12 px; link 152 by 60
+PASS  contact.html at 320px: "@LeeamApplications" is 25.6 px tall at a line height of 25.6 px, so 1 line(s); font 16 px; logo to name gap 12 px; link 231 by 60
+PASS  contact.html at 360px: "Leeam Applications" is 25.6 px tall at a line height of 25.6 px, so 1 line(s); font 16 px; logo to name gap 20 px; link 211 by 60
+PASS  contact.html at 360px: "leeam_applications" is 25.6 px tall at a line height of 25.6 px, so 1 line(s); font 16 px; logo to name gap 20 px; link 211 by 60
+PASS  contact.html at 360px: "@leeamapps" is 25.6 px tall at a line height of 25.6 px, so 1 line(s); font 16 px; logo to name gap 12 px; link 152 by 60
+PASS  contact.html at 360px: "@LeeamApplications" is 25.6 px tall at a line height of 25.6 px, so 1 line(s); font 16 px; logo to name gap 12 px; link 231 by 60
+PASS  contact.html at 375px: "Leeam Applications" is 25.6 px tall at a line height of 25.6 px, so 1 line(s); font 16 px; logo to name gap 20 px; link 211 by 60
+PASS  contact.html at 375px: "leeam_applications" is 25.6 px tall at a line height of 25.6 px, so 1 line(s); font 16 px; logo to name gap 20 px; link 211 by 60
+PASS  contact.html at 375px: "@leeamapps" is 25.6 px tall at a line height of 25.6 px, so 1 line(s); font 16 px; logo to name gap 12 px; link 152 by 60
+PASS  contact.html at 375px: "@LeeamApplications" is 25.6 px tall at a line height of 25.6 px, so 1 line(s); font 16 px; logo to name gap 12 px; link 231 by 60
+PASS  contact.html at 390px: "Leeam Applications" is 30.7 px tall at a line height of 30.7 px, so 1 line(s); font 19.2 px; logo to name gap 20 px; link 267 by 60
+PASS  contact.html at 390px: "leeam_applications" is 30.7 px tall at a line height of 30.7 px, so 1 line(s); font 19.2 px; logo to name gap 20 px; link 268 by 60
+PASS  contact.html at 390px: "@leeamapps" is 30.7 px tall at a line height of 30.7 px, so 1 line(s); font 19.2 px; logo to name gap 20 px; link 206 by 60
+PASS  contact.html at 390px: "@LeeamApplications" is 30.7 px tall at a line height of 30.7 px, so 1 line(s); font 19.2 px; logo to name gap 20 px; link 297 by 60
+PASS  contact.html at 412px: "Leeam Applications" is 30.7 px tall at a line height of 30.7 px, so 1 line(s); font 19.2 px; logo to name gap 20 px; link 267 by 60
+PASS  contact.html at 412px: "leeam_applications" is 30.7 px tall at a line height of 30.7 px, so 1 line(s); font 19.2 px; logo to name gap 20 px; link 268 by 60
+PASS  contact.html at 412px: "@leeamapps" is 30.7 px tall at a line height of 30.7 px, so 1 line(s); font 19.2 px; logo to name gap 20 px; link 206 by 60
+PASS  contact.html at 412px: "@LeeamApplications" is 30.7 px tall at a line height of 30.7 px, so 1 line(s); font 19.2 px; logo to name gap 20 px; link 297 by 60
 
 RESULT: PASS (0 failure line(s))
